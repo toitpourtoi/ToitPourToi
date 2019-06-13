@@ -3,14 +3,10 @@ package com.example.housesfinder
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.BaseAdapter
 import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.example.housesfinder.Model.Annonce
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -19,7 +15,7 @@ class MainActivity : AppCompatActivity() {
 
     //la liste partagé des annoces :
     companion object {
-        var listAnnoce = ArrayList<Anonce>()
+        var listAnnoce = ArrayList<Annonce>()
         var listSellers = ArrayList<Seller>()
        lateinit  var  mainSeller:Seller
     }
@@ -45,21 +41,54 @@ class MainActivity : AppCompatActivity() {
         false
     }
     fun initListAnnonces(){
-        listAnnoce.add(Anonce(6000.6,"Alger",1000000.05,"Villa", arrayListOf(
-            Uri.parse(R.drawable.home1.toString()),Uri.parse(R.drawable.home2.toString()),Uri.parse(R.drawable.home3.toString())) ,
-            listSellers[0]
-        ))
-        listAnnoce.add(Anonce(6000.6,"Jijel",1000000.05,"Villa", arrayListOf(
-            Uri.parse(R.drawable.home2.toString())) ,
-            listSellers[1]))
+        listAnnoce.add(
+            Annonce(
+                6000.6, "Alger", 1000000.05, "Villa", arrayListOf(
+                    Uri.parse(R.drawable.home1.toString()),
+                    Uri.parse(R.drawable.home2.toString()),
+                    Uri.parse(R.drawable.home3.toString())
+                ),
+                listSellers[0],
+                "7 Chambres\n" +
+                        "2 Salles de bain\n" +
+                        "9 Pièces (nombre total)"
+            )
+        )
+        listAnnoce.add(
+            Annonce(
+                6000.6, "Jijel", 1000000.05, "Villa", arrayListOf(
+                    Uri.parse(R.drawable.home2.toString())
+                ),
+                listSellers[1],
+                "7 Chambres\n" +
+                        "2 Salles de bain\n" +
+                        "9 Pièces (nombre total)"
+            )
+        )
 
-        listAnnoce.add(Anonce(6000.6,"Oran",1000000.05,"Villa", arrayListOf(
-            Uri.parse(R.drawable.home3.toString())) ,
-            listSellers[2]))
+        listAnnoce.add(
+            Annonce(
+                6000.6, "Oran", 1000000.05, "Villa", arrayListOf(
+                    Uri.parse(R.drawable.home3.toString())
+                ),
+                listSellers[2],
+                "7 Chambres\n" +
+                        "2 Salles de bain\n" +
+                        "9 Pièces (nombre total)"
+            )
+        )
 
-        listAnnoce.add(Anonce(6000.6,"Alger",1000000.05,"Appartement", arrayListOf(
-            Uri.parse(R.drawable.home4.toString()) ),
-            listSellers[3]))
+        listAnnoce.add(
+            Annonce(
+                6000.6, "Alger", 1000000.05, "Appartement", arrayListOf(
+                    Uri.parse(R.drawable.home4.toString())
+                ),
+                listSellers[3],
+                "7 Chambres\n" +
+                        "2 Salles de bain\n" +
+                        "9 Pièces (nombre total)"
+            )
+        )
     }
 
     fun initListSellers(){

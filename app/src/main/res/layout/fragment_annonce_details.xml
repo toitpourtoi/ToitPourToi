@@ -1,89 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
+<androidx.constraintlayout.widget.ConstraintLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:orientation="vertical"
+            xmlns:tools="http://schemas.android.com/tools" android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent" android:background="@color/white">
 
 
-        <TextView
-                android:text="Alger"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/wilayaDetails"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
-                android:textColor="@color/colorPrimary"
-                android:fontFamily="@font/kollektif_bold"
-                android:layout_weight="1" android:textSize="18sp"
-                android:gravity="center"
-                android:layout_marginTop="50dp"
-                app:layout_constraintTop_toBottomOf="@+id/viewPager"
-                app:layout_constraintStart_toEndOf="@+id/imageView5"
-                android:layout_marginStart="40dp"/>
-        <TextView
-                android:text="Villa"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/typeDetails"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
-                android:textColor="@color/colorPrimary"
-                android:fontFamily="@font/kollektif_bold"
-                android:layout_weight="1" android:textSize="18sp"
-                android:gravity="center"
-                app:layout_constraintStart_toEndOf="@+id/wilayaDetails"
-                android:layout_marginStart="40dp" android:layout_marginTop="50dp"
-                app:layout_constraintTop_toBottomOf="@+id/viewPager"/>
-        <TextView
-                android:text="60008.10 m²"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/areaDetails"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
-                android:textColor="@color/colorPrimary"
-                android:fontFamily="@font/kollektif_bold"
-                android:layout_weight="1" android:textSize="24sp"
-                android:textStyle="bold"
-                android:layout_marginTop="58dp"
-                app:layout_constraintTop_toBottomOf="@+id/wilayaDetails"
-                app:layout_constraintStart_toEndOf="@+id/imageView7" android:layout_marginStart="40dp"/>
-        <TextView
-                android:text="60008.10 m²"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/priceDetails"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
-                android:textColor="@color/colorPrimary"
-                android:fontFamily="@font/kollektif_bold"
-                android:layout_weight="1" android:textSize="28sp"
-                android:textStyle="bold"
-                android:layout_marginTop="50dp"
-                app:layout_constraintTop_toBottomOf="@+id/areaDetails"
-                app:layout_constraintStart_toEndOf="@+id/imageView8"
-                android:layout_marginStart="40dp"/>
-        <androidx.viewpager.widget.ViewPager
+    <androidx.viewpager.widget.ViewPager
                 android:layout_width="0dp"
                 android:layout_height="300dp" app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" android:id="@+id/viewPager">
-        </androidx.viewpager.widget.ViewPager>
-    <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp" app:srcCompat="@drawable/marker_icon"
-                android:id="@+id/imageView5" android:layout_marginTop="40dp"
-                app:layout_constraintTop_toBottomOf="@+id/viewPager" app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="40dp"/>
-        <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp" app:srcCompat="@drawable/area_icon"
-                android:id="@+id/imageView7" android:layout_marginTop="40dp"
-                app:layout_constraintTop_toBottomOf="@+id/imageView5" app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="40dp"/>
-        <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp" app:srcCompat="@drawable/mony_icon"
-                android:id="@+id/imageView8" android:layout_marginTop="40dp"
-                app:layout_constraintTop_toBottomOf="@+id/imageView7" app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="40dp"/>
+    </androidx.viewpager.widget.ViewPager>
+
+    <ScrollView
+            android:layout_width="0dp"
+            android:layout_height="0dp" app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0" android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/viewPager">
+        <androidx.constraintlayout.widget.ConstraintLayout android:layout_width="match_parent" android:layout_height="200dp"
+                      android:orientation="vertical">
+            <TextView
+                    android:text="Alger"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/wilayaDetails"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+                    android:textColor="@color/black"
+                    android:fontFamily="sans-serif"
+                    android:layout_weight="1" android:textSize="14sp"
+                    android:gravity="center"
+                    app:layout_constraintStart_toEndOf="@+id/imageView5"
+                    android:layout_marginStart="40dp" app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginTop="19dp"/>
+            <TextView
+                    android:text="Villa"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/typeDetails"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+                    android:textColor="@color/black"
+                    android:fontFamily="sans-serif"
+                    android:layout_weight="1" android:textSize="14sp"
+                    android:gravity="center"
+                    app:layout_constraintStart_toEndOf="@+id/wilayaDetails"
+                    android:layout_marginStart="40dp"
+                    app:layout_constraintTop_toTopOf="parent" android:layout_marginTop="19dp"/>
+            <TextView
+                    android:text="60008.10 m²"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/areaDetails"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+                    android:textColor="@color/black"
+                    android:fontFamily="sans-serif"
+                    android:layout_weight="1" android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toBottomOf="@+id/wilayaDetails"
+                    app:layout_constraintStart_toEndOf="@+id/imageView7" android:layout_marginStart="40dp"
+                    android:layout_marginTop="20dp"/>
+            <TextView
+                    android:text="6 855 500 DA"
+                    android:layout_width="wrap_content"
+                    android:layout_height="33dp"
+                    android:id="@+id/priceDetails"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+                    android:textColor="@color/black"
+                    android:fontFamily="sans-serif"
+                    android:layout_weight="1" android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="15dp"
+                    app:layout_constraintTop_toBottomOf="@+id/areaDetails"
+                    app:layout_constraintStart_toEndOf="@+id/imageView8"
+                    android:layout_marginStart="40dp"/>
+            <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp" app:srcCompat="@drawable/ic_marker_map"
+                    android:id="@+id/imageView5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginStart="40dp" app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginTop="16dp"/>
+            <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp" app:srcCompat="@drawable/ic_area"
+                    android:id="@+id/imageView7" android:layout_marginTop="16dp"
+                    app:layout_constraintTop_toBottomOf="@+id/imageView5" app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginStart="40dp"/>
+            <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp" app:srcCompat="@drawable/ic_mony"
+                    android:id="@+id/imageView8" android:layout_marginTop="16dp"
+                    app:layout_constraintTop_toBottomOf="@+id/imageView7" app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginStart="40dp"/>
+            <TextView
+                    android:text="TextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/descriptionDetails" app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginEnd="32dp"
+                    app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="32dp"
+                    android:layout_marginTop="16dp" app:layout_constraintTop_toBottomOf="@+id/priceDetails"
+                    android:textColor="@color/black"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

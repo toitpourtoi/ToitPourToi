@@ -2,7 +2,6 @@ package com.example.housesfinder
 
 import android.app.Dialog
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
@@ -12,10 +11,11 @@ import android.view.ViewGroup
 import android.view.Window
 import android.widget.*
 import androidx.fragment.app.Fragment
+import com.example.housesfinder.Fragments.AnnonceDetailsFragment
+import com.example.housesfinder.Model.Annonce
 import kotlinx.android.synthetic.main.card_annonce.view.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import java.lang.Double
-import java.lang.Double.parseDouble
 import java.util.*
 
 class FragmentHome : Fragment() {
@@ -68,16 +68,28 @@ class FragmentHome : Fragment() {
 
 
     })}
+    private fun addFragment(fragment: Fragment) {
+        activity!!.supportFragmentManager
+            .beginTransaction()
+            .setCustomAnimations(
+                R.anim.design_bottom_sheet_slide_in,
+                R.anim.design_bottom_sheet_slide_out
+            )
+            .replace(R.id.frame_container, fragment, fragment.javaClass.getSimpleName())
+            .addToBackStack(fragment.javaClass.getSimpleName())
+            .commit()
+    }
+
 
     inner class AnonceAdapter: BaseAdapter , Filterable {
 
 
         var context : Context?=null
-        var listAnnonceLocal = ArrayList<Anonce>()
-        var filteredList = ArrayList<Anonce>()
+        var listAnnonceLocal = ArrayList<Annonce>()
+        var filteredList = ArrayList<Annonce>()
         var listFilter :AnonceFilter? = null
 
-        constructor(listCard : ArrayList<Anonce>,context : Context){
+        constructor(listCard : ArrayList<Annonce>, context : Context){
             this.listAnnonceLocal = listCard
             this.filteredList=listCard
             this.context = context
@@ -109,11 +121,9 @@ class FragmentHome : Fragment() {
             layoutItem.date.text=item.date
 
             layoutItem.seeDetails.setOnClickListener(View.OnClickListener {
-                //move to details
-                val intent = Intent(context,AnnonceDetails::class.java)
-
-                intent.putExtra("item",position)
-                context!!.startActivity(intent)
+                var detailsFragment = AnnonceDetailsFragment()
+                detailsFragment.position = position
+                addFragment(detailsFragment)
             })
             return layoutItem
         }
@@ -142,8 +152,8 @@ class FragmentHome : Fragment() {
 
         fun sortListByWilaya()
         {
-            Collections.sort(filteredList, object : Comparator<Anonce> {
-                override fun compare(emp1: Anonce, emp2: Anonce): Int {
+            Collections.sort(filteredList, object : Comparator<Annonce> {
+                override fun compare(emp1: Annonce, emp2: Annonce): Int {
                     return emp1.wilaya!!.compareTo(emp2.wilaya!!)
                 }
 
@@ -153,8 +163,8 @@ class FragmentHome : Fragment() {
         }
         fun sortListByPrice()
         {
-            Collections.sort(filteredList, object : Comparator<Anonce> {
-                override fun compare(emp1: Anonce, emp2: Anonce): Int {
+            Collections.sort(filteredList, object : Comparator<Annonce> {
+                override fun compare(emp1: Annonce, emp2: Annonce): Int {
 
                     return Double.compare(emp1.price!!,emp2.price!!)
 
@@ -168,8 +178,8 @@ class FragmentHome : Fragment() {
         }
         fun sortListByDate( )
         {
-            Collections.sort(filteredList, object : Comparator<Anonce> {
-                override fun compare(emp1: Anonce, emp2: Anonce): Int {
+            Collections.sort(filteredList, object : Comparator<Annonce> {
+                override fun compare(emp1: Annonce, emp2: Annonce): Int {
                     return emp1.date.compareTo(emp2.date)
 
 
@@ -191,10 +201,10 @@ class FragmentHome : Fragment() {
                 var  filterResults:FilterResults =  FilterResults ()
                 if (constraint!=null && constraint.length>0) {
 
-                    var  tempList: ArrayList<Anonce>  =  ArrayList<Anonce>();
+                    var  tempList: ArrayList<Annonce>  =  ArrayList<Annonce>();
 
                     // search content in friend list
-                    for (annonce :Anonce in listAnnonceLocal ) {
+                    for (annonce : Annonce in listAnnonceLocal ) {
                         if (annonce.wilaya!!.toLowerCase().startsWith(constraint.toString().toLowerCase())) {
                             tempList.add(annonce)
 
@@ -220,7 +230,7 @@ class FragmentHome : Fragment() {
             @SuppressWarnings("unchecked")
             @Override
             override fun  publishResults(constraint:CharSequence, results: FilterResults) {
-                filteredList = results.values  as ArrayList<Anonce>
+                filteredList = results.values  as ArrayList<Annonce>
 
                 notifyDataSetChanged();
             }

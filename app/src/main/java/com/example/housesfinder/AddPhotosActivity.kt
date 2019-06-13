@@ -8,6 +8,7 @@ import android.widget.ImageView.ScaleType
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.housesfinder.Model.Annonce
 import kotlinx.android.synthetic.main.activity_add_annonce_photos.*
 import java.lang.Double.parseDouble
 
@@ -30,7 +31,15 @@ class AddPhotosActivity : AppCompatActivity() {
         // next  button
         button_valider.setOnClickListener {
 
-            val anonce = Anonce (parseDouble(infoList[0]),infoList[2],parseDouble(infoList[1]),infoList[3],uriList,MainActivity.mainSeller)
+            val anonce = Annonce(
+                parseDouble(infoList[0]),
+                infoList[2],
+                parseDouble(infoList[1]),
+                infoList[3],
+                uriList,
+                MainActivity.mainSeller,
+                ""
+            )
             MainActivity.listAnnoce.add(anonce)
             startActivity(Intent(this, MainActivity::class.java))
 
