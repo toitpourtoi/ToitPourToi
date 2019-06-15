@@ -108,7 +108,7 @@ class FragmentHome : Fragment() {
             val item = filteredList.get(position)
             var inflator = context!!.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
             val layoutItem = inflator.inflate(R.layout.card_annonce,null)
-            layoutItem.cardTitle.text = item.type!!
+            //layoutItem.cardTitle.text = item.type!!
             Log.i("path",item.image!!.get(0).toString())
             if(isNumeric(item.image!!.get(0).toString()))
                 layoutItem.cardImage.setImageResource(item.image!!.get(0).toString().toInt())
@@ -117,8 +117,8 @@ class FragmentHome : Fragment() {
 
             layoutItem.cardWilaya.text = item.wilaya!!
             layoutItem.cardPrice.text = item.price.toString()!! + " DA"
-            layoutItem.CardArea.text = item.area.toString()!! + "m²"
-            layoutItem.date.text=item.date
+            //layoutItem.CardArea.text = item.area.toString()!! + "m²"
+            //layoutItem.date.text=item.date
 
             layoutItem.seeDetails.setOnClickListener(View.OnClickListener {
                 var detailsFragment = AnnonceDetailsFragment()

@@ -2,16 +2,15 @@ package com.example.housesfinder.Fragments
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
-import com.example.housesfinder.Model.Annonce
-import com.example.housesfinder.MainActivity
-import com.example.housesfinder.R
 import com.example.housesfinder.Adapters.ViewPagerAdapter
+import com.example.housesfinder.MainActivity
+import com.example.housesfinder.Model.Annonce
+import com.example.housesfinder.R
 import kotlinx.android.synthetic.main.fragment_annonce_details.*
 
 @SuppressLint("ValidFragment")
@@ -41,7 +40,7 @@ class AnnonceDetailsInfoFragment(var position : Int) : Fragment(){
         wilayaDetails.text = annonce.wilaya.toString()
         areaDetails.text = annonce.area.toString() + "m²"
         descriptionDetails.text = annonce.description
-        Log.i("DETAILS",position.toString())
+
     }
 
 }
