@@ -11,7 +11,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
-import com.example.housesfinder.MainActivity
+import com.example.housesfinder.Activities.MainActivity
 import com.example.housesfinder.R
 import java.lang.Double
 

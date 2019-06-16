@@ -1,4 +1,4 @@
-package com.example.housesfinder
+package com.example.housesfinder.Activities
 
 import android.content.Intent
 import android.net.Uri
@@ -6,7 +6,12 @@ import android.os.Bundle
 import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.example.housesfinder.*
+import com.example.housesfinder.Fragments.AddNewAnnonceFragment
+import com.example.housesfinder.Fragments.FragmentHome
+import com.example.housesfinder.Fragments.FragmentProfile
 import com.example.housesfinder.Model.Annonce
+import com.example.housesfinder.Model.Seller
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -17,7 +22,7 @@ class MainActivity : AppCompatActivity() {
     companion object {
         var listAnnoce = ArrayList<Annonce>()
         var listSellers = ArrayList<Seller>()
-       lateinit  var  mainSeller:Seller
+       lateinit  var  mainSeller: Seller
     }
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
@@ -29,7 +34,9 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.navigation_add -> {
 
-                startActivity(Intent(this, AddDetailsActivity::class.java))
+                val fragment = AddNewAnnonceFragment()
+                addFragment(fragment)
+                return@OnNavigationItemSelectedListener true
 
             }
             R.id.navigation_profile -> {
@@ -93,9 +100,30 @@ class MainActivity : AppCompatActivity() {
 
     fun initListSellers(){
         listSellers.add(mainSeller)
-        listSellers.add(Seller("oussama","Bouhenniche","055189178","fo@ufc.dz"))
-        listSellers.add(Seller("asma","Bouhenniche","055189178","fa@ufc.dz"))
-        listSellers.add(Seller("maroua","Bourouais","055189178","fm@esi.dz"))
+        listSellers.add(
+            Seller(
+                "oussama",
+                "Bouhenniche",
+                "055189178",
+                "fo@ufc.dz"
+            )
+        )
+        listSellers.add(
+            Seller(
+                "asma",
+                "Bouhenniche",
+                "055189178",
+                "fa@ufc.dz"
+            )
+        )
+        listSellers.add(
+            Seller(
+                "maroua",
+                "Bourouais",
+                "055189178",
+                "fm@esi.dz"
+            )
+        )
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -120,7 +148,10 @@ class MainActivity : AppCompatActivity() {
     private fun addFragment(fragment: Fragment) {
         supportFragmentManager
             .beginTransaction()
-            .setCustomAnimations(R.anim.design_bottom_sheet_slide_in, R.anim.design_bottom_sheet_slide_out)
+            .setCustomAnimations(
+                R.anim.design_bottom_sheet_slide_in,
+                R.anim.design_bottom_sheet_slide_out
+            )
             .replace(R.id.frame_container, fragment, fragment.javaClass.getSimpleName())
             .addToBackStack(fragment.javaClass.getSimpleName())
             .commit()

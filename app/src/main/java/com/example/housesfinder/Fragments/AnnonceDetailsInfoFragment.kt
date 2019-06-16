@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
 import com.example.housesfinder.Adapters.ViewPagerAdapter
-import com.example.housesfinder.MainActivity
+import com.example.housesfinder.Activities.MainActivity
 import com.example.housesfinder.Model.Annonce
 import com.example.housesfinder.R
 import kotlinx.android.synthetic.main.fragment_annonce_details.*

@@ -16,59 +16,54 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0" android:adjustViewBounds="true"
-                android:cropToPadding="true"/>
+                android:cropToPadding="true" android:scaleType="centerCrop"/>
         <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" app:srcCompat="@drawable/ic_mony" android:id="@+id/imageView16"
-                app:layout_constraintEnd_toStartOf="@+id/cardPrice"
-                android:layout_marginEnd="8dp" app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="8dp" android:layout_marginTop="8dp"
-                app:layout_constraintTop_toBottomOf="@+id/cardImage" android:layout_marginBottom="8dp"
-                app:layout_constraintBottom_toTopOf="@+id/imageView17" app:layout_constraintHorizontal_bias="0.2"
-                app:layout_constraintVertical_bias="0.666"/>
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="16dp" android:layout_marginTop="17dp"
+                app:layout_constraintTop_toBottomOf="@+id/cardImage"
+        />
         <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" app:srcCompat="@drawable/ic_marker_map"
-                android:id="@+id/imageView17" android:layout_marginStart="12dp"
+                android:id="@+id/imageView17" android:layout_marginStart="16dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/cardPrice" android:layout_marginTop="24dp"/>
+                android:layout_marginTop="16dp" app:layout_constraintTop_toBottomOf="@+id/imageView16"/>
         <TextView
                 android:text="TextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/cardPrice"
-                app:layout_constraintBottom_toTopOf="@+id/cardWilaya"
-                android:layout_marginBottom="12dp"
-                app:layout_constraintEnd_toEndOf="@+id/cardWilaya"
-                app:layout_constraintStart_toStartOf="@+id/cardWilaya" app:layout_constraintHorizontal_bias="0.0"
-                android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/cardImage"
-                android:textColor="@android:color/black"/>
+                android:layout_marginTop="20dp" app:layout_constraintTop_toBottomOf="@+id/cardImage"
+                android:textColor="@android:color/black" app:layout_constraintStart_toEndOf="@+id/imageView16"
+                android:layout_marginStart="28dp"/>
         <TextView
                 android:text="TextView"
                 android:layout_width="wrap_content"
                 android:layout_height="18dp"
                 android:id="@+id/cardWilaya"
-                app:layout_constraintStart_toEndOf="@+id/imageView17"
-                android:layout_marginStart="24dp"
-                app:layout_constraintBottom_toBottomOf="@+id/seeDetails" android:textColor="@android:color/black"/>
+                android:textColor="@android:color/black"
+                android:layout_marginTop="20dp"
+                app:layout_constraintTop_toBottomOf="@+id/cardPrice"
+                app:layout_constraintStart_toEndOf="@+id/imageView17" android:layout_marginStart="28dp"/>
         <Button
                 android:text="Voir Détails"
                 android:layout_width="165dp"
                 android:layout_height="wrap_content" android:id="@+id/seeDetails"
                 android:background="@drawable/rounded_card_btn" android:textColor="@color/colorAccent"
-                android:layout_marginEnd="4dp"
+                android:layout_marginEnd="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/cardWilaya"
-                android:layout_marginStart="8dp" app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintTop_toBottomOf="@+id/cardImage"
-                android:textStyle="bold" android:layout_marginTop="5dp"/>
+                android:textStyle="bold" android:layout_marginTop="8dp" android:textSize="12sp"
+                android:layout_marginBottom="8dp" app:layout_constraintBottom_toBottomOf="parent"/>
         <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" app:srcCompat="@drawable/ic_launch_black_24dp"
                 android:id="@+id/imageView18"
-                app:layout_constraintStart_toStartOf="@+id/seeDetails"
-                app:layout_constraintEnd_toEndOf="@+id/seeDetails" app:layout_constraintHorizontal_bias="0.92"
+                app:layout_constraintEnd_toEndOf="@+id/seeDetails"
                 app:layout_constraintBottom_toBottomOf="@+id/seeDetails"
-                app:layout_constraintTop_toTopOf="@+id/seeDetails" app:layout_constraintVertical_bias="0.458"/>
+                app:layout_constraintTop_toTopOf="@+id/seeDetails" app:layout_constraintVertical_bias="0.458"
+                android:layout_marginEnd="8dp"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>

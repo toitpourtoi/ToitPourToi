@@ -1,7 +1,6 @@
 package com.example.housesfinder.Model
 
 import android.net.Uri
-import com.example.housesfinder.Seller
 import java.util.*
 
 

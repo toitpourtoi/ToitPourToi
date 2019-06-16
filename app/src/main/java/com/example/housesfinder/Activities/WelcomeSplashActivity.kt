@@ -1,9 +1,7 @@
 package com.example.housesfinder.Activities
 
 
-import android.animation.ObjectAnimator
 import android.os.Bundle
-import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.FrameLayout
@@ -11,8 +9,7 @@ import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
-import com.example.housesfinder.RegisterFragment
-import android.animation.AnimatorSet
+import com.example.housesfinder.Fragments.RegisterFragment
 import com.example.housesfinder.R
 
 

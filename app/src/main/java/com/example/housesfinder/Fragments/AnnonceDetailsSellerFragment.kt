@@ -13,15 +13,14 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import com.example.housesfinder.MainActivity
+import com.example.housesfinder.Activities.MainActivity
 import com.example.housesfinder.R
-import com.example.housesfinder.Seller
+import com.example.housesfinder.Model.Seller
 import kotlinx.android.synthetic.main.fragment_profile.*
-import java.text.FieldPosition
 
 @SuppressLint("ValidFragment")
 class AnnonceDetailsSellerFragment(val position: Int) : Fragment() {
-    lateinit var seller:Seller
+    lateinit var seller: Seller
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         seller = MainActivity.listAnnoce.get(position).seller!!

@@ -1,7 +1,8 @@
-package com.example.housesfinder
+package com.example.housesfinder.Fragments
 
 import android.app.Dialog
 import android.content.Context
+import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
@@ -11,8 +12,9 @@ import android.view.ViewGroup
 import android.view.Window
 import android.widget.*
 import androidx.fragment.app.Fragment
-import com.example.housesfinder.Fragments.AnnonceDetailsFragment
+import com.example.housesfinder.Activities.MainActivity
 import com.example.housesfinder.Model.Annonce
+import com.example.housesfinder.R
 import kotlinx.android.synthetic.main.card_annonce.view.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import java.lang.Double
@@ -21,7 +23,7 @@ import java.util.*
 class FragmentHome : Fragment() {
 
 
-    var adapter:AnonceAdapter?=null
+    var adapter: AnonceAdapter?=null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,14 +82,40 @@ class FragmentHome : Fragment() {
             .commit()
     }
 
+    private fun showDialog(image: Uri) {
+        var dialogs = Dialog(context)
+        dialogs.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialogs.setCancelable(true)
+        val view = layoutInflater!!.inflate(R.layout.dialog_custom_layout,null)
+        val photoViewd = view.findViewById<ImageView>(R.id.zoomedPhoto)
 
+        // SET THE IMAGEVIEW DIMENSIONS
+        val dimens = (context as MainActivity).windowManager.defaultDisplay.width
+        val finalDimens = dimens
+
+        val imgvwDimens = LinearLayout.LayoutParams(finalDimens, finalDimens)
+        photoViewd.setLayoutParams(imgvwDimens)
+
+        // SET SCALETYPE
+        photoViewd.setScaleType(ImageView.ScaleType.CENTER_CROP)
+
+        if(!isNumeric(image.toString()))
+            photoViewd.setImageURI(image)
+        else
+            photoViewd.setImageResource(image.toString().toInt())
+        dialogs.setContentView(view)
+        /* noBtn.setOnClickListener { dialogs.dismiss() }*/
+
+        dialogs.show()
+
+    }
     inner class AnonceAdapter: BaseAdapter , Filterable {
 
 
         var context : Context?=null
         var listAnnonceLocal = ArrayList<Annonce>()
         var filteredList = ArrayList<Annonce>()
-        var listFilter :AnonceFilter? = null
+        var listFilter : AnonceFilter? = null
 
         constructor(listCard : ArrayList<Annonce>, context : Context){
             this.listAnnonceLocal = listCard
@@ -114,6 +142,10 @@ class FragmentHome : Fragment() {
                 layoutItem.cardImage.setImageResource(item.image!!.get(0).toString().toInt())
             else
                 layoutItem.cardImage.setImageURI(item.image!!.get(0))
+
+            layoutItem.cardImage.setOnClickListener {
+                showDialog(item.image!!.get(0))
+            }
 
             layoutItem.cardWilaya.text = item.wilaya!!
             layoutItem.cardPrice.text = item.price.toString()!! + " DA"

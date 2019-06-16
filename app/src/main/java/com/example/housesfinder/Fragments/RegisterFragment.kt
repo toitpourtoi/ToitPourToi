@@ -1,4 +1,4 @@
-package com.example.housesfinder
+package com.example.housesfinder.Fragments
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,6 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.example.housesfinder.Activities.MainActivity
+import com.example.housesfinder.R
+import com.example.housesfinder.Model.Seller
 import kotlinx.android.synthetic.main.fragment_register.*
 
 class RegisterFragment : Fragment() {
@@ -24,7 +27,12 @@ class RegisterFragment : Fragment() {
         submit_btn.setOnClickListener(View.OnClickListener {
             if( (!(fname.text.isBlank())) && !(lname.text.isBlank()) && (!(phone.text.isBlank())) && (!(email.text.isBlank())))
             {
-                MainActivity.mainSeller =Seller(fname.text.toString(),lname.text.toString(),phone.text.toString(),email.text.toString())
+                MainActivity.mainSeller = Seller(
+                    fname.text.toString(),
+                    lname.text.toString(),
+                    phone.text.toString(),
+                    email.text.toString()
+                )
                 startActivity(Intent(activity, MainActivity::class.java))
 
             }

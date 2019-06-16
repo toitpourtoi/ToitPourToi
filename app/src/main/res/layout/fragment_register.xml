@@ -78,7 +78,7 @@
             android:paddingLeft="30dp" android:paddingTop="5dp" android:paddingRight="5dp" android:paddingBottom="5dp"
             android:layout_marginTop="24dp" app:layout_constraintTop_toBottomOf="@+id/phone" android:textSize="12sp"/>
     <Button
-            android:text="Créerc compte"
+            android:text="Créer compte"
             android:layout_width="213dp"
             android:layout_height="53dp" android:id="@+id/submit_btn"
             app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
