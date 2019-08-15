@@ -9,20 +9,13 @@ import com.example.housesfinder.Activities.MainActivity
 import com.example.housesfinder.R
 import kotlinx.android.synthetic.main.fragment_profile.*
 
-class FragmentProfile :Fragment() {
+class FragmentCollectionSave :Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        var rootView = inflater!!.inflate(R.layout.fragment_profile, container, false)
+        var rootView = inflater!!.inflate(R.layout.fragment_collection_save, container, false)
         return rootView
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        fullName.text = MainActivity.mainSeller.firstName + " " + MainActivity.mainSeller.lastName
-        emailProfile.text = MainActivity.mainSeller.email
-        phoneProfile.text = MainActivity.mainSeller.phoneNumber
     }
 }

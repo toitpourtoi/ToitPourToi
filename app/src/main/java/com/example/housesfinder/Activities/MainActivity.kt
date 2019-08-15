@@ -1,15 +1,13 @@
 package com.example.housesfinder.Activities
 
-import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.housesfinder.*
-import com.example.housesfinder.Fragments.AddNewAnnonceFragment
 import com.example.housesfinder.Fragments.FragmentHome
-import com.example.housesfinder.Fragments.FragmentProfile
+import com.example.housesfinder.Fragments.FragmentCollectionSave
 import com.example.housesfinder.Model.Annonce
 import com.example.housesfinder.Model.Seller
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -32,15 +30,9 @@ class MainActivity : AppCompatActivity() {
                 addFragment(fragment)
                 return@OnNavigationItemSelectedListener true
             }
-            R.id.navigation_add -> {
 
-                val fragment = AddNewAnnonceFragment()
-                addFragment(fragment)
-                return@OnNavigationItemSelectedListener true
-
-            }
             R.id.navigation_profile -> {
-                val fragment = FragmentProfile()
+                val fragment = FragmentCollectionSave()
                 addFragment(fragment)
                 return@OnNavigationItemSelectedListener true
             }
@@ -138,11 +130,6 @@ class MainActivity : AppCompatActivity() {
         val fragment = FragmentHome()
         addFragment(fragment)
     }
-
-
-
-
-
 
 
     private fun addFragment(fragment: Fragment) {

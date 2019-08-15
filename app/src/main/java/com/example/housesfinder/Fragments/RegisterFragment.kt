@@ -24,22 +24,26 @@ class RegisterFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        submit_btn.setOnClickListener(View.OnClickListener {
-            if( (!(fname.text.isBlank())) && !(lname.text.isBlank()) && (!(phone.text.isBlank())) && (!(email.text.isBlank())))
-            {
-                MainActivity.mainSeller = Seller(
-                    fname.text.toString(),
-                    lname.text.toString(),
-                    phone.text.toString(),
-                    email.text.toString()
-                )
-                startActivity(Intent(activity, MainActivity::class.java))
 
-            }
-            else {
-                Toast.makeText(activity,"Veuillez remplir tous les champs", Toast.LENGTH_SHORT).show()
-            }
-        })
+        google_btn.setOnClickListener {
+            MainActivity.mainSeller = Seller(
+                "Sihem",
+                "Bouhenniche",
+                "0551789142",
+                "fs@esi.dz"
+            )
+            startActivity(Intent(activity, MainActivity::class.java))
+        }
+        facebook_btn.setOnClickListener {
+            MainActivity.mainSeller = Seller(
+                "Sihem",
+                "Bouhenniche",
+                "0551789142",
+                "fs@esi.dz"
+            )
+            startActivity(Intent(activity, MainActivity::class.java))
+        }
+
     }
 
 }

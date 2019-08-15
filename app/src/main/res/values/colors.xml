@@ -4,38 +4,16 @@
     <color name="colorPrimaryDark">#1565C0</color>
     <color name="colorAccent">#42A5F5</color>
 
-    <color name="cyan">#00ACC1</color>
     <color name="bluegreylight">#B0BEC5</color>
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
-    <color name="darkGrey">#3F3F3F</color>
-    <color name="grey">#91E7E4E4</color>
-    <color name="shimmer_background">#dddddd</color>
     <color name="whiteGrey">#F0F0F0</color>
-    <color name="orange">#FF6050</color>
-    <color name="deepPink">#FF0E83</color>
-    <color name="canberry">#D54262</color>
-    <color name="cosmic">#813867</color>
-    <color name="bossanova">#66336E</color>
-    <color name="blackGrape">#341539</color>
-    <color name="mediumBlue">#1E88E5</color>
-    <color name="lightBlue">#DDE3FE</color>
 
     <color name="transparent">#00FFFFFF</color>
 
-    <color name="teal">#FFAB91</color>
-
-
-
-    <color name="pink_lighten_1">#E9F0F4</color>
-    <color name="pink_darken_2">#C2185B</color>
-    <color name="pink_darken_4">#880E4F</color>
-    <color name="pink_lighten_3">#F48FB1</color>
+    <color name="blue">#4267b2</color>
+    <color name="red">#C62828</color>
     <color name="pink">#E91E63</color>
-
-    <color name="pink_opac">#80E91E63</color>
-    <color name="grey_darken_1">#212121</color>
-    <color name="grey_darken_2">#424242</color>
 
 
 </resources>

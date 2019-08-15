@@ -37,7 +37,6 @@ class AnnonceDetailsSellerFragment(val position: Int) : Fragment() {
         fullName.text = seller.firstName + " " + seller.lastName
         emailProfile.text = seller.email
         phoneProfile.text = seller.phoneNumber
-        callSeller.visibility = View.VISIBLE
         callSeller.setOnClickListener(View.OnClickListener {
             Toast.makeText(this.context,"Calling",Toast.LENGTH_SHORT).show()
             callPhone()
