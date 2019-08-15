@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "810538588808",
+    "firebase_url": "https://toitpourtoi-56bd4.firebaseio.com",
+    "project_id": "toitpourtoi-56bd4",
+    "storage_bucket": "toitpourtoi-56bd4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:810538588808:android:3efc85213ea6c6b8",
+        "android_client_info": {
+          "package_name": "com.example.housesfinder"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "810538588808-dccn6dg1ncs6oe30rt3r2sms6ck4h3is.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCzU31jLUzedr-AE64jSA7-RqkFvX_0r44"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "810538588808-dccn6dg1ncs6oe30rt3r2sms6ck4h3is.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

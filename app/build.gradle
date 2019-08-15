@@ -45,4 +45,8 @@ dependencies {
 
     implementation 'com.robertlevonyan.view:MaterialExpansionPanel:1.2.0'
 
+    implementation 'com.google.firebase:firebase-auth:18.1.0'
+    implementation 'com.google.android.gms:play-services-auth:17.0.0'
+
 }
+apply plugin: 'com.google.gms.google-services'
