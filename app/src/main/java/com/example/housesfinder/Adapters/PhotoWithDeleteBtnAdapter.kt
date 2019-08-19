@@ -22,7 +22,7 @@ class PhotoWithDeleteBtnAdapter : BaseAdapter {
         val photo = uriList.get(position)
         var inflator = context!!.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val layoutItem = inflator.inflate(R.layout.custom_photo_with_delete_btn,null)
-        Log.i("PHOTO : ","here photo position ${position}")
+        Log.i("PHOTO : ","here photo idAd ${position}")
         layoutItem.picked_photo.setImageURI(photo)
         layoutItem.delete_picked_media.setOnClickListener {
             uriList.removeAt(position)

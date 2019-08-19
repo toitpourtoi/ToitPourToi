@@ -7,11 +7,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.housesfinder.Activities.MainActivity
-import com.example.housesfinder.Adapters.AnnonceAdapter
 import com.example.housesfinder.R
 import kotlinx.android.synthetic.main.fragment_home.*
-import androidx.appcompat.widget.PopupMenu
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.housesfinder.Activities.WelcomeSplashActivity
+import com.example.housesfinder.Adapters.RealEstateAdListAdapter
+import com.example.housesfinder.ViewModel.RealEstateAdViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -27,15 +31,13 @@ class FragmentHome : Fragment() {
 
     private lateinit var googleSignInClient: GoogleSignInClient
 
-    var adapter: AnnonceAdapter?=null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        adapter = AnnonceAdapter(MainActivity.listAnnoce, this!!.activity!!)
+
         // [START config_signin]
         // Configure Google Sign In
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.default_web_client_id))
+            .requestIdToken("810538588808-dccn6dg1ncs6oe30rt3r2sms6ck4h3is.apps.googleusercontent.com")
             .requestEmail()
             .build()
         // [END config_signin]
@@ -54,7 +56,7 @@ class FragmentHome : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        annoncesList.adapter = adapter
+
         logout_btn.setOnClickListener {
             signOut()
         }
