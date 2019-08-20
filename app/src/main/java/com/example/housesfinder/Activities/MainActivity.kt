@@ -5,11 +5,11 @@ import android.os.Bundle
 import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.example.housesfinder.*
-import com.example.housesfinder.Fragments.FragmentHome
 import com.example.housesfinder.Fragments.FragmentCollectionSave
+import com.example.housesfinder.Fragments.FragmentHome
 import com.example.housesfinder.Model.Annonce
 import com.example.housesfinder.Model.Seller
+import com.example.housesfinder.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity() {
     companion object {
         var listAnnoce = ArrayList<Annonce>()
         var listSellers = ArrayList<Seller>()
-       lateinit  var  mainSeller: Seller
+       /*lateinit*/  var  mainSeller: Seller = Seller("","","","")
     }
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->

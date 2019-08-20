@@ -9,18 +9,15 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.housesfinder.Activities.MainActivity
-import com.example.housesfinder.R
 import com.example.housesfinder.Model.Seller
+import com.example.housesfinder.R
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
-import com.google.android.gms.common.api.GoogleApiClient
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
-import kotlinx.android.synthetic.main.fragment_register.*
 
 class RegisterFragment : Fragment() {
     //Google Login Request Code
@@ -38,6 +35,9 @@ class RegisterFragment : Fragment() {
             "0551789142",
             "fs@esi.dz"
         )
+
+        startActivity(Intent(activity, MainActivity::class.java))
+
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -47,7 +47,7 @@ class RegisterFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        mAuth = FirebaseAuth.getInstance()
+       /* mAuth = FirebaseAuth.getInstance()
 
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken("810538588808-dccn6dg1ncs6oe30rt3r2sms6ck4h3is.apps.googleusercontent.com")
@@ -61,7 +61,7 @@ class RegisterFragment : Fragment() {
         }
         facebook_btn.setOnClickListener {
             startActivity(Intent(activity, MainActivity::class.java))
-        }
+        }*/
 
     }
 
