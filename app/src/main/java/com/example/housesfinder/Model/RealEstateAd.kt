@@ -14,6 +14,15 @@ class RealEstateAd {
     @ColumnInfo(name = "id")
     var id: Int = 0
 
+    @ColumnInfo(name = "title")
+    var title : String = "Appartement à vendre"
+
+    @ColumnInfo(name = "sate")
+    var state : Int = -1
+
+    @ColumnInfo(name = "link")
+    var link: String = "https://------------"
+
     @ColumnInfo(name = "category")
     var category : String = "Appartement"
 
@@ -23,8 +32,8 @@ class RealEstateAd {
     @ColumnInfo(name = "address")
     var address : String = "----"
 
-    @ColumnInfo(name = "town")
-    var town : String = "----"
+    @ColumnInfo(name = "date")
+    var date : String = "--/--/----"
 
     @ColumnInfo(name = "wilaya")
     var wilaya : String = "----"

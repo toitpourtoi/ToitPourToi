@@ -8,6 +8,7 @@ import com.example.housesfinder.Database.RealEstateAdRoomDatabase
 import com.example.housesfinder.Model.RealEstateAd
 import com.example.housesfinder.Repositories.RealEstateAdRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class RealEstateAdViewModel (application: Application) : AndroidViewModel(application) {
@@ -23,8 +24,13 @@ class RealEstateAdViewModel (application: Application) : AndroidViewModel(applic
 
 
     //if not working use GlobalScope instead of viewModelScope
-    fun insert(ad : RealEstateAd) = viewModelScope.launch(Dispatchers.IO) {
+    fun insert(ad : RealEstateAd) = viewModelScope.launch {
         repository.insert(ad)
+    }
+
+    //if not working use GlobalScope instead of viewModelScope
+    fun delete(ad : RealEstateAd) = viewModelScope.launch {
+        repository.delete(ad)
     }
 
 }

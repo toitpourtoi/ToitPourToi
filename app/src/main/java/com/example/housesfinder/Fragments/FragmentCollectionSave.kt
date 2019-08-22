@@ -16,6 +16,7 @@ import com.example.housesfinder.ViewModel.RealEstateAdViewModel
 import kotlinx.android.synthetic.main.fragment_profile.*
 
 class FragmentCollectionSave :Fragment() {
+
     private lateinit var adViewModel: RealEstateAdViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,8 +32,7 @@ class FragmentCollectionSave :Fragment() {
 
         val recyclerView = activity!!.findViewById<RecyclerView>(R.id.savedList)
         val adapter = RealEstateAdListAdapter(context!!)
-        recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(context!!)
+
 
 
         // Get a new or existing ViewModel from the ViewModelProvider.
@@ -45,5 +45,8 @@ class FragmentCollectionSave :Fragment() {
             // Update the cached copy of the words in the adapter.
             ads?.let { adapter.setAds(it) }
         })
+        adapter.adViewModel = adViewModel
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(context!!)
     }
 }

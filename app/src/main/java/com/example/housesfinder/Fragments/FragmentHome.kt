@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.housesfinder.Activities.WelcomeSplashActivity
 import com.example.housesfinder.Adapters.RealEstateAdListAdapter
+import com.example.housesfinder.Model.RealEstateAd
 import com.example.housesfinder.ViewModel.RealEstateAdViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -47,6 +48,8 @@ class FragmentHome : Fragment() {
         // [START initialize_auth]
         // Initialize Firebase Auth
         auth = FirebaseAuth.getInstance()
+
+
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -56,6 +59,14 @@ class FragmentHome : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        val recyclerView = activity!!.findViewById<RecyclerView>(R.id.annoncesList)
+        val adapter = RealEstateAdListAdapter(context!!)
+        var ad = RealEstateAd()
+        ad.id = 5
+        adapter.setAds(arrayListOf(ad))
+
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(context!!)
 
         logout_btn.setOnClickListener {
             signOut()

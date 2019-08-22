@@ -3,17 +3,18 @@ package com.example.housesfinder.Adapters
 import android.app.Dialog
 import android.content.Context
 import android.net.Uri
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.view.Window
+import android.view.*
 import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.example.housesfinder.Activities.MainActivity
+import com.example.housesfinder.Database.RealEstateAdRoomDatabase
 import com.example.housesfinder.Fragments.AnnonceDetailsFragment
 import com.example.housesfinder.Model.RealEstateAd
 import com.example.housesfinder.R
+import com.example.housesfinder.ViewModel.RealEstateAdViewModel
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class RealEstateAdListAdapter internal constructor(
     context: Context
@@ -22,14 +23,16 @@ class RealEstateAdListAdapter internal constructor(
     private val inflater: LayoutInflater = LayoutInflater.from(context)
     private var ads = emptyList<RealEstateAd>() // Cached copy of words
     private val adapterContext = context
-    private var state = -1
+    lateinit var adViewModel: RealEstateAdViewModel
+
     inner class AdViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val adItemView: TextView = itemView.findViewById(R.id.cardTitle)
         val wilayaItemView : TextView = itemView.findViewById(R.id.cardWilaya)
-        val priceItemView : TextView = itemView.findViewById(R.id.cardPrice)
+        val linkItemView : TextView = itemView.findViewById(R.id.linkDetails)
+        val dateItemView : TextView = itemView.findViewById(R.id.dateDetails)
         val detailsBtn : ImageButton = itemView.findViewById(R.id.seeDetails)
-        val imageView : ImageView = itemView.findViewById(R.id.cardImage)
         val saveBtn : ImageButton = itemView.findViewById(R.id.book_btn)
+        val moreBtn : ImageButton = itemView.findViewById(R.id.more_btn)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AdViewHolder {
@@ -39,21 +42,40 @@ class RealEstateAdListAdapter internal constructor(
 
     override fun onBindViewHolder(holder: AdViewHolder, position: Int) {
         val current = ads[position]
-        holder.adItemView.text = current.category
+        holder.adItemView.text = current.title
         holder.wilayaItemView.text = current.wilaya
-        holder.priceItemView.text = current.price
+        holder.linkItemView.text = current.link
+        holder.dateItemView.text = current.date
+
+        if(ads[position].state == 1){
+            holder.saveBtn.setBackgroundResource(R.drawable.ic_bookmark_black_24dp)
+        }
+        //set actions
         holder.detailsBtn.setOnClickListener {
-            var detailsFragment = AnnonceDetailsFragment()
-            detailsFragment.idAd = position
-            addFragment(detailsFragment)
+            showDetails(position)
         }
-        //set the url of the image then set method zoom on click
-        holder.imageView.setOnClickListener {
-            showDialog(Uri.parse((R.drawable.home1).toString()))
-        }
+
         //save annonce
         holder.saveBtn.setOnClickListener {
-            saveAnnonce(holder.saveBtn)
+            saveAnnonce(holder.saveBtn,position)
+        }
+        //display menu when clicking on moreBtn
+        holder.moreBtn.setOnClickListener {
+            var popupMenu = PopupMenu(adapterContext,it)
+            popupMenu.menuInflater.inflate(R.menu.popup_menu,popupMenu.menu)
+            if(ads[position].state == 1){
+                popupMenu.menu.getItem(0).setTitle("Supprimer")
+            }
+            popupMenu.setOnMenuItemClickListener{ item ->
+                when(item.itemId) {
+                    R.id.action_save ->
+                        saveAnnonce(holder.saveBtn,position)
+                    R.id.action_details->
+                        showDetails(position)
+                }
+                true
+            }
+            popupMenu.show()
         }
     }
 
@@ -80,42 +102,28 @@ class RealEstateAdListAdapter internal constructor(
             .commit()
     }
 
-    private fun showDialog(image: Uri) {
-        var layoutInflater = LayoutInflater.from(adapterContext)
-        var dialogs = Dialog(adapterContext)
-        dialogs.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialogs.setCancelable(true)
-        val view = layoutInflater!!.inflate(R.layout.dialog_custom_layout,null)
-        val photoViewd = view.findViewById<ImageView>(R.id.zoomedPhoto)
-
-        // SET THE IMAGEVIEW DIMENSIONS
-        val dimens = (adapterContext as MainActivity).windowManager.defaultDisplay.width
-        val finalDimens = dimens
-
-        val imgvwDimens = LinearLayout.LayoutParams(finalDimens, finalDimens)
-        photoViewd.setLayoutParams(imgvwDimens)
-
-        // SET SCALETYPE
-        photoViewd.setScaleType(ImageView.ScaleType.CENTER_CROP)
-
-
-        //photoViewd.setImageURI(image)
-        //this line will be deleted we,will nnot use hardcoded ads
-        photoViewd.setImageResource(image.toString().toInt())
-        dialogs.setContentView(view)
-        /* noBtn.setOnClickListener { dialogs.dismiss() }*/
-
-        dialogs.show()
-
-    }
-
-    private fun saveAnnonce(saveBtn : ImageButton) {
-        if(state == 1){
-            saveBtn.setBackgroundResource(R.drawable.ic_bookmark_black_24dp)
-            this.state = -1
-        }else{
+    private fun saveAnnonce(saveBtn : ImageButton,position: Int) {
+        val wordsDao = RealEstateAdRoomDatabase.getDatabase((adapterContext as MainActivity), GlobalScope).realEstateDao()
+        if(ads[position].state == 1){
+            GlobalScope.launch {
+                ads[position].state = -1
+                wordsDao.delete(ads[position])
+            }
             saveBtn.setBackgroundResource(R.drawable.ic_bookmark_border_black_24dp)
-            this.state = 1
+        }else{
+            GlobalScope.launch {
+                ads[position].state = 1
+                wordsDao.insert(ads[position])
+            }
+            saveBtn.setBackgroundResource(R.drawable.ic_bookmark_black_24dp)
         }
     }
+
+    private fun showDetails(position: Int){
+        var detailsFragment = AnnonceDetailsFragment()
+        detailsFragment.idAd = position
+        addFragment(detailsFragment)
+    }
+
+
 }
