@@ -13,17 +13,22 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import com.example.housesfinder.Activities.MainActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import com.example.housesfinder.Model.RealEstateAd
 import com.example.housesfinder.R
-import com.example.housesfinder.Model.Seller
+import com.example.housesfinder.ViewModel.RealEstateAdViewModel
 import kotlinx.android.synthetic.main.fragment_profile.*
 
 @SuppressLint("ValidFragment")
 class AnnonceDetailsSellerFragment(val position: Int) : Fragment() {
-    lateinit var seller: Seller
+    private lateinit var  annonce: RealEstateAd
+    private lateinit var adViewModel: RealEstateAdViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        seller = MainActivity.listAnnoce.get(position).seller!!
+
+
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -34,12 +39,25 @@ class AnnonceDetailsSellerFragment(val position: Int) : Fragment() {
     @SuppressLint("RestrictedApi")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        fullName.text = seller.firstName + " " + seller.lastName
-        emailProfile.text = seller.email
-        phoneProfile.text = seller.phoneNumber
-        callSeller.setOnClickListener(View.OnClickListener {
-            Toast.makeText(this.context,"Calling",Toast.LENGTH_SHORT).show()
-            callPhone()
+        //set the data
+        //get the annonce from database get by id
+        adViewModel = ViewModelProviders.of(this).get(RealEstateAdViewModel::class.java)
+
+        // Add an observer on the LiveData returned by getAlphabetizedWords.
+        // The onChanged() method fires when the observed data changes and the activity is
+        // in the foreground.
+        adViewModel.allAds.observe(this, Observer { ads ->
+            // Update the cached copy of the words in the adapter.
+            annonce = ads!!.get(position)
+            fullName.text = annonce.sellerFirstName + " " + annonce.sellerLastName
+            phoneProfile.text = annonce.sellerPhone
+            emailProfile.text = annonce.sellerMail
+
+
+            callSeller.setOnClickListener(View.OnClickListener {
+                Toast.makeText(this.context,"Calling",Toast.LENGTH_SHORT).show()
+                callPhone()
+            })
         })
     }
 
@@ -84,7 +102,11 @@ class AnnonceDetailsSellerFragment(val position: Int) : Fragment() {
     }
 
     fun callPhone(){
-        val number =  seller!!.phoneNumber.toString()
+
+        // get the number from annonce
+        //TODO
+
+        val number =  annonce.sellerPhone
         val intent = Intent(Intent.ACTION_CALL, Uri.parse("tel:" + number))
         startActivity(intent)
     }

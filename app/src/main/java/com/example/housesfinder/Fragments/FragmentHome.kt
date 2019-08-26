@@ -8,16 +8,21 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.housesfinder.Activities.MainActivity
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+
+
 import com.example.housesfinder.Activities.WelcomeSplashActivity
-import com.example.housesfinder.Adapters.AnnonceAdapter
+
 import com.example.housesfinder.R
+import com.example.housesfinder.RssService.RssFeed
 import com.example.housesfinder.RssService.RssService
+import kotlinx.android.synthetic.main.fragment_home.*
+import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import kotlinx.android.synthetic.main.fragment_home.*
 import me.toptas.rssconverter.RssConverterFactory
-import me.toptas.rssconverter.RssFeed
+
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -32,25 +37,23 @@ class FragmentHome : Fragment() {
 
     private lateinit var googleSignInClient: GoogleSignInClient
 
-    var adapter: AnnonceAdapter?=null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        adapter = AnnonceAdapter(MainActivity.listAnnoce, this!!.activity!!)
+
         // [START config_signin]
         // Configure Google Sign In
-      /*  val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.default_web_client_id))
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken("810538588808-dccn6dg1ncs6oe30rt3r2sms6ck4h3is.apps.googleusercontent.com")
             .requestEmail()
             .build()
         // [END config_signin]
 
-        googleSignInClient = GoogleSignIn.getClient(context!!, gso)*/
+        googleSignInClient = GoogleSignIn.getClient(context!!, gso)
 
         // [START initialize_auth]
         // Initialize Firebase Auth
         auth = FirebaseAuth.getInstance()
-        getRssFeed()
+        //getRssFeed()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -60,7 +63,7 @@ class FragmentHome : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        annoncesList.adapter = adapter
+
         logout_btn.setOnClickListener {
             signOut()
         }
@@ -102,30 +105,5 @@ class FragmentHome : Fragment() {
         }
     }
 
-    private fun getRssFeed()
-    {
-        val retrofit = Retrofit.Builder()
-            .baseUrl("https://www.algerimmo.com/")
-            .addConverterFactory(RssConverterFactory.create())
-            .build()
 
-        val service = retrofit.create(RssService::class.java)
-        service.getRss("rss/?category=&type=0&location=")
-            .enqueue(object : Callback<RssFeed> {
-                override fun onResponse(call: Call<RssFeed>, response: Response<RssFeed>) {
-                    // Populate list with response.body().getItems()
-                    val size = response.body()!!.items!!.size
-                    val a=response.body()!!.items!!.get(0).publishDate
-                    Log.i("size : ",size.toString())
-                    Log.i("first item :",a.toString())
-
-
-                }
-
-                override fun onFailure(call: Call<RssFeed>, t: Throwable) {
-                    // Show failure message
-                    Log.i("error",t.message)
-                }
-            })
-    }
 }
