@@ -30,12 +30,13 @@
             />
             <TextView
                     android:text="TextView"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:id="@+id/cardWilaya"
                     android:textColor="@android:color/black"
                     app:layout_constraintStart_toEndOf="@+id/imageView17" android:layout_marginStart="24dp"
-                    android:layout_marginBottom="16dp" app:layout_constraintBottom_toBottomOf="parent"/>
+                    android:layout_marginBottom="16dp" app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginEnd="8dp" app:layout_constraintEnd_toStartOf="@+id/dateDetails"/>
             <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" app:srcCompat="@drawable/ic_bookmark_border_black_24dp"
@@ -72,12 +73,14 @@
                     app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="16dp"/>
             <TextView
                     android:text="TextView"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:id="@+id/linkDetails" app:layout_constraintStart_toEndOf="@+id/imageView2"
                     android:layout_marginStart="24dp" android:layout_marginBottom="8dp"
                     app:layout_constraintBottom_toTopOf="@+id/cardWilaya" android:textColor="@color/black"
-                    android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/cardTitle"/>
+                    android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/cardTitle"
+                    android:autoLink="web" android:clickable="true" android:layout_marginEnd="8dp"
+                    app:layout_constraintEnd_toStartOf="@+id/imageButton2"/>
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

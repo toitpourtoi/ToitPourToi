@@ -1,8 +1,10 @@
 package com.example.housesfinder.Adapters
 
+import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.net.Uri
+import android.util.Log
 import android.view.*
 import android.widget.*
 import androidx.fragment.app.Fragment
@@ -10,6 +12,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.housesfinder.Activities.MainActivity
 import com.example.housesfinder.Database.RealEstateAdRoomDatabase
 import com.example.housesfinder.Fragments.AnnonceDetailsFragment
+import com.example.housesfinder.Fragments.FragmentHome
+import com.example.housesfinder.Fragments.RegisterFragment
 import com.example.housesfinder.Model.RealEstateAd
 import com.example.housesfinder.R
 import com.example.housesfinder.ViewModel.RealEstateAdViewModel
@@ -23,7 +27,6 @@ class RealEstateAdListAdapter internal constructor(
     private val inflater: LayoutInflater = LayoutInflater.from(context)
     private var ads = emptyList<RealEstateAd>() // Cached copy of words
     private val adapterContext = context
-    lateinit var adViewModel: RealEstateAdViewModel
 
     inner class AdViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val adItemView: TextView = itemView.findViewById(R.id.cardTitle)
@@ -42,6 +45,7 @@ class RealEstateAdListAdapter internal constructor(
 
     override fun onBindViewHolder(holder: AdViewHolder, position: Int) {
         val current = ads[position]
+        Log.i("USERID",current.userId)
         holder.adItemView.text = current.title
         holder.wilayaItemView.text = current.wilaya
         holder.linkItemView.text = current.link
@@ -103,22 +107,35 @@ class RealEstateAdListAdapter internal constructor(
     }
 
     private fun saveAnnonce(saveBtn : ImageButton,position: Int) {
-        val wordsDao = RealEstateAdRoomDatabase.getDatabase((adapterContext as MainActivity), GlobalScope).realEstateDao()
         if(ads[position].state == 1){
-            GlobalScope.launch {
-                ads[position].state = -1
-                wordsDao.delete(ads[position])
-            }
-            saveBtn.setBackgroundResource(R.drawable.ic_bookmark_border_black_24dp)
+            deleteAnnonce(saveBtn,position)
         }else{
-            GlobalScope.launch {
-                ads[position].state = 1
-                wordsDao.insert(ads[position])
-            }
+            ads[position].state = 1
+            ads[position].userId = MainActivity.USER_ID
+            MainActivity.adViewModel.insert(ads[position])
             saveBtn.setBackgroundResource(R.drawable.ic_bookmark_black_24dp)
+            Toast.makeText(adapterContext, "L'annonce a bien été enregistrée", Toast.LENGTH_SHORT).show()
         }
     }
+    private fun deleteAnnonce(saveBtn: ImageButton,position: Int){
+        val builder = AlertDialog.Builder(adapterContext)
+        builder.setTitle("Supprimer l'annonce")
+        builder.setMessage("Vous êtes sûre que vous vouliez supprimer cette annonce de liste des enregistrements ?")
+        //builder.setPositiveButton("OK", DialogInterface.OnClickListener(function = x))
 
+        builder.setPositiveButton(android.R.string.yes) { dialog, which ->
+            Toast.makeText(adapterContext, "L'annonce a bien été supprimée", Toast.LENGTH_SHORT).show()
+            ads[position].state = -1
+            MainActivity.adViewModel.delete(ads[position])
+            saveBtn.setBackgroundResource(R.drawable.ic_bookmark_border_black_24dp)
+        }
+
+        builder.setNegativeButton(android.R.string.no) { dialog, which ->
+            dialog.dismiss()
+        }
+
+        builder.show()
+    }
     private fun showDetails(position: Int){
         var detailsFragment = AnnonceDetailsFragment()
         detailsFragment.idAd = position

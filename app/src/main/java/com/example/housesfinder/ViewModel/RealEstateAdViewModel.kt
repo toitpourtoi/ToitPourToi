@@ -17,19 +17,19 @@ class RealEstateAdViewModel (application: Application) : AndroidViewModel(applic
     val allAds: LiveData<List<RealEstateAd>>
 
     init {
-        val wordsDao = RealEstateAdRoomDatabase.getDatabase(application,viewModelScope).realEstateDao()
+        val wordsDao = RealEstateAdRoomDatabase.getDatabase(application).realEstateDao()
         repository = RealEstateAdRepository(wordsDao)
         allAds = repository.allAds
     }
 
 
     //if not working use GlobalScope instead of viewModelScope
-    fun insert(ad : RealEstateAd) = viewModelScope.launch {
+    fun insert(ad : RealEstateAd) = GlobalScope.launch {
         repository.insert(ad)
     }
 
     //if not working use GlobalScope instead of viewModelScope
-    fun delete(ad : RealEstateAd) = viewModelScope.launch {
+    fun delete(ad : RealEstateAd) = GlobalScope.launch {
         repository.delete(ad)
     }
 
