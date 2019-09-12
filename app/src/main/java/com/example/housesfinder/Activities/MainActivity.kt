@@ -14,12 +14,7 @@ class MainActivity : AppCompatActivity() {
     private var content: FrameLayout? = null
 
 
-    /*//la liste partagé des annoces :
-    companion object {
-        var listAnnoce = ArrayList<Annonce>()
-        var listSellers = ArrayList<Seller>()
-       lateinit var  mainSeller: Seller
-    }*/
+
 
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
@@ -54,10 +49,11 @@ class MainActivity : AppCompatActivity() {
     private fun addFragment(fragment: Fragment) {
         supportFragmentManager
             .beginTransaction()
-            .setCustomAnimations(
+                //TODO : inspect error here
+           /* .setCustomAnimations(
                 R.anim.design_bottom_sheet_slide_in,
                 R.anim.design_bottom_sheet_slide_out
-            )
+            )*/
             .replace(R.id.frame_container, fragment, fragment.javaClass.getSimpleName())
             .addToBackStack(fragment.javaClass.getSimpleName())
             .commit()

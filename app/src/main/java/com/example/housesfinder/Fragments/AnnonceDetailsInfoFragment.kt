@@ -14,7 +14,7 @@ import com.example.housesfinder.Model.RealEstateAd
 import com.example.housesfinder.R
 import com.example.housesfinder.ViewModel.RealEstateAdViewModel
 import kotlinx.android.synthetic.main.fragment_annonce_details.*
-import java.util.ArrayList
+import java.util.*
 
 @SuppressLint("ValidFragment")
 class AnnonceDetailsInfoFragment(var position : Int) : Fragment(){
@@ -51,7 +51,7 @@ class AnnonceDetailsInfoFragment(var position : Int) : Fragment(){
             // Update the cached copy of the words in the adapter.
             annonce = ads!!.get(position)
             //display data :
-            wilayaDetails.text = annonce.address + "," + annonce.town + "," + annonce.wilaya
+            wilayaDetails.text = annonce.address + "," + "," + annonce.wilaya
             areaDetails.text = annonce.area
             priceDetails.text = annonce.price + " DA"
             titreDetails.text = annonce.type

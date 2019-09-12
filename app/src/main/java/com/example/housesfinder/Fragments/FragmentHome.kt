@@ -1,32 +1,33 @@
 package com.example.housesfinder.Fragments
 
+
+
+
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.housesfinder.Activities.MainActivity
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-
-
 import com.example.housesfinder.Activities.WelcomeSplashActivity
-
+import com.example.housesfinder.Adapters.RealEstateAdListAdapter
+import com.example.housesfinder.Model.RealEstateAd
 import com.example.housesfinder.R
-import com.example.housesfinder.RssService.RssFeed
-import com.example.housesfinder.RssService.RssService
-import kotlinx.android.synthetic.main.fragment_home.*
+import com.example.housesfinder.ViewModel.RssAdsViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import me.toptas.rssconverter.RssConverterFactory
-
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
+import kotlinx.android.synthetic.main.fragment_home.*
+import me.toptas.rssconverter.RssItem
 
 
 class FragmentHome : Fragment() {
@@ -34,6 +35,8 @@ class FragmentHome : Fragment() {
     // [START declare_auth]
     private lateinit var auth: FirebaseAuth
     // [END declare_auth]
+    private lateinit var rssAdViewModel: RssAdsViewModel
+
 
     private lateinit var googleSignInClient: GoogleSignInClient
 
@@ -48,12 +51,14 @@ class FragmentHome : Fragment() {
             .build()
         // [END config_signin]
 
-        googleSignInClient = GoogleSignIn.getClient(context!!, gso)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            googleSignInClient = GoogleSignIn.getClient(context!!, gso)
+        }
 
         // [START initialize_auth]
         // Initialize Firebase Auth
         auth = FirebaseAuth.getInstance()
-        //getRssFeed()
+
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -63,26 +68,72 @@ class FragmentHome : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        val recyclerView = activity!!.findViewById<RecyclerView>(R.id.annoncesList)
+        val adapter = RealEstateAdListAdapter(this.context!!)
+
+        val  realEstateList : ArrayList<RealEstateAd> =ArrayList()
+        rssAdViewModel = ViewModelProviders.of(this).get(RssAdsViewModel::class.java)
+        rssAdViewModel.getAds().observe(this.activity!!, Observer <List<RssItem>>{ ads ->
+            ads.let{
+
+            for ( item: RssItem in ads)
+            {
+                val ad = RealEstateAd()
+
+                ad.title=item.title!!
+                ad.descript=item.description!!
+                ad.link=item.link!!
+                ad.date=item.publishDate!!
+                if (item.image!=null)
+                if ( item.title!!.contains("Wilaya d'")){
+                ad.wilaya=item.title!!.substringAfter("Wilaya d'")}
+                else{
+                    ad.wilaya=item.title!!.substringAfter("Wilaya de")
+                }
+
+                realEstateList.add(ad)
+
+            }
+            adapter.setAds(realEstateList.toList())
+            recyclerView.adapter = adapter
+            recyclerView.layoutManager = LinearLayoutManager(context!!)}
+
+
+
+            // Update the cached copy of the words in the adapter.
+          //  ads?.let {   adapter.setAds(ads) }
+        })
+
 
         logout_btn.setOnClickListener {
             signOut()
         }
         notification_btn.setOnClickListener {
-            val fragment = FragmentNotifications()
+           val fragment = FragmentNotifications()
             addFragment(fragment)
+            //TODO: use this code to bring data toeachcaegory
+           // adapter.setAds(emptyList())
+          //  adapter.notifyDataSetChanged()
         }
+
+
+
     }
     private fun addFragment(fragment: Fragment) {
 
-        (context as MainActivity)!!.supportFragmentManager
-            .beginTransaction()
-            .setCustomAnimations(
-                R.anim.design_bottom_sheet_slide_in,
-                R.anim.design_bottom_sheet_slide_out
-            )
-            .replace(R.id.frame_container, fragment, fragment.javaClass.getSimpleName())
-            .addToBackStack(fragment.javaClass.getSimpleName())
-            .commit()
+
+            (context as MainActivity)!!.supportFragmentManager
+                .beginTransaction()
+                    //TODO : inspect error here
+                    /*
+                .setCustomAnimations(
+                    R.anim.design_bottom_sheet_slide_in,
+                    R.anim.design_bottom_sheet_slide_out
+                )*/
+                .replace(R.id.frame_container, fragment, fragment.javaClass.getSimpleName())
+                .addToBackStack(fragment.javaClass.getSimpleName())
+                .commit()
+
     }
 
     private fun signOut() {

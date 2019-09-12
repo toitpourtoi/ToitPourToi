@@ -4,4 +4,6 @@
     <string name="title_collection_save">Enregistrements</string>
     <string name="annonce_details">Sur l\'immobilier</string>
     <string name="seller_details">A propos du vendeur</string>
+    <string name="save">Enregister</string>
+    <string name="details">Voir détails</string>
 </resources>

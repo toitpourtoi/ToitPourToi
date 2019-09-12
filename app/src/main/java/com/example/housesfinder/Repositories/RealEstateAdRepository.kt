@@ -13,4 +13,9 @@ class RealEstateAdRepository(private val realEstateAdDao: RealEstateAdDao) {
     suspend fun insert(ad: RealEstateAd) {
         realEstateAdDao.insert(ad)
     }
+
+    @WorkerThread
+    suspend fun delete(ad: RealEstateAd) {
+        realEstateAdDao.delete(ad)
+    }
 }
