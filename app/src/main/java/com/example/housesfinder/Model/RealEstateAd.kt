@@ -14,6 +14,9 @@ class RealEstateAd {
     @ColumnInfo(name = "id")
     var id: Int = 0
 
+    @ColumnInfo(name = "user_id")
+    var userId : String = "----"
+
     @ColumnInfo(name = "title")
     var title : String = "Appartement à vendre"
 
@@ -22,6 +25,9 @@ class RealEstateAd {
 
     @ColumnInfo(name = "link")
     var link: String = "https://------------"
+
+    @ColumnInfo(name = "link_img")
+    var linkImg: String = "https://------------"
 
     @ColumnInfo(name = "category")
     var category : String = "Appartement"
@@ -47,11 +53,8 @@ class RealEstateAd {
     @ColumnInfo(name = "descript")
     var descript : String = "----"
 
-    @ColumnInfo(name = "seller_first_name")
-    var sellerFirstName : String = "----"
-
-    @ColumnInfo(name = "seller_last_name")
-    var sellerLastName : String = "----"
+    @ColumnInfo(name = "seller_full_name")
+    var sellerFullName : String = "----"
 
     @ColumnInfo(name = "seller_address")
     var sellerAddress : String = "----"

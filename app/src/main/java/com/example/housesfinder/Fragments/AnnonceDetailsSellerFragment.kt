@@ -49,7 +49,7 @@ class AnnonceDetailsSellerFragment(val position: Int) : Fragment() {
         adViewModel.allAds.observe(this, Observer { ads ->
             // Update the cached copy of the words in the adapter.
             annonce = ads!!.get(position)
-            fullName.text = annonce.sellerFirstName + " " + annonce.sellerLastName
+            fullName.text = annonce.sellerFullName
             phoneProfile.text = annonce.sellerPhone
             emailProfile.text = annonce.sellerMail
 

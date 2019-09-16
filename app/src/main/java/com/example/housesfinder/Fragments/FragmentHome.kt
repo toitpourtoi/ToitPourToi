@@ -3,6 +3,7 @@ package com.example.housesfinder.Fragments
 
 
 
+
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -25,22 +26,27 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import me.toptas.rssconverter.RssItem
 
 
+
+
 class FragmentHome : Fragment() {
+
 
     // [START declare_auth]
     private lateinit var auth: FirebaseAuth
     // [END declare_auth]
     private lateinit var rssAdViewModel: RssAdsViewModel
 
+        private lateinit var googleSignInClient: GoogleSignInClient
 
-    private lateinit var googleSignInClient: GoogleSignInClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
 
         // [START config_signin]
         // Configure Google Sign In
@@ -57,6 +63,7 @@ class FragmentHome : Fragment() {
         // [START initialize_auth]
         // Initialize Firebase Auth
         auth = FirebaseAuth.getInstance()
+
 
     }
 
@@ -106,6 +113,7 @@ class FragmentHome : Fragment() {
         logout_btn.setOnClickListener {
             signOut()
         }
+
         notification_btn.setOnClickListener {
            val fragment = FragmentNotifications()
             addFragment(fragment)
@@ -152,6 +160,17 @@ class FragmentHome : Fragment() {
         } else {
             startActivity(Intent(activity,WelcomeSplashActivity::class.java))
         }
+
+        val adapter = RealEstateAdListAdapter(context!!)
+        var ad = RealEstateAd()
+        ad.id = 5
+        ad.link = "http://www.annonce-algerie.com/DetailsAnnonceImmobilier.asp?cod_ann=186244"
+        ad.userId = MainActivity.USER_ID
+        adapter.setAds(arrayListOf(ad))
+
+      //  recyclerView.adapter = adapter
+       // recyclerView.layoutManager = LinearLayoutManager(context!!)
+
     }
 
 
