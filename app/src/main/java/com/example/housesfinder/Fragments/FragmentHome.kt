@@ -26,8 +26,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_home.*
 import me.toptas.rssconverter.RssItem
 
 
@@ -75,6 +73,8 @@ class FragmentHome : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         val recyclerView = activity!!.findViewById<RecyclerView>(R.id.annoncesList)
+        val logOutBtn = activity!!.findViewById<RecyclerView>(R.id.logout_btn)
+        val notifBtn = activity!!.findViewById<RecyclerView>(R.id.notification_btn)
         val adapter = RealEstateAdListAdapter(this.context!!)
 
         val  realEstateList : ArrayList<RealEstateAd> =ArrayList()
@@ -109,19 +109,25 @@ class FragmentHome : Fragment() {
           //  ads?.let {   adapter.setAds(ads) }
         })
 
-
-        logout_btn.setOnClickListener {
+      /*  logOutBtn.setOnClickListener {
             signOut()
         }
 
-        notification_btn.setOnClickListener {
-           val fragment = FragmentNotifications()
+        notifBtn.setOnClickListener {
+            val fragment = FragmentNotifications()
             addFragment(fragment)
             //TODO: use this code to bring data toeachcaegory
-           // adapter.setAds(emptyList())
-          //  adapter.notifyDataSetChanged()
-        }
+            // adapter.setAds(emptyList())
+            //  adapter.notifyDataSetChanged()
+        }*/
 
+
+
+
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
 
     }
