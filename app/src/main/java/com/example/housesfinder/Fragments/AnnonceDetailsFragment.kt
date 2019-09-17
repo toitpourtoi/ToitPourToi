@@ -9,17 +9,19 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.housesfinder.*
 import com.example.housesfinder.Adapters.PageAdapter
+import com.example.housesfinder.Model.RealEstateAd
 import kotlinx.android.synthetic.main.activity_annonce_details.*
 
 class AnnonceDetailsFragment : Fragment() {
     var idAd: Int = 0
+    lateinit var annonce:RealEstateAd
     lateinit var pageAdapter: PageAdapter
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         pageAdapter = PageAdapter(activity!!.supportFragmentManager)
-        pageAdapter.setPositionWithFragments(idAd)
+        pageAdapter.setPositionWithFragments(idAd,annonce)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

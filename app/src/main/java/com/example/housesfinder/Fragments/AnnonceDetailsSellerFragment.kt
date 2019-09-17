@@ -21,9 +21,7 @@ import com.example.housesfinder.ViewModel.RealEstateAdViewModel
 import kotlinx.android.synthetic.main.fragment_profile.*
 
 @SuppressLint("ValidFragment")
-class AnnonceDetailsSellerFragment(val position: Int) : Fragment() {
-    private lateinit var  annonce: RealEstateAd
-    private lateinit var adViewModel: RealEstateAdViewModel
+class AnnonceDetailsSellerFragment(val position: Int,var annonce : RealEstateAd) : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,23 +39,12 @@ class AnnonceDetailsSellerFragment(val position: Int) : Fragment() {
         super.onActivityCreated(savedInstanceState)
         //set the data
         //get the annonce from database get by id
-        adViewModel = ViewModelProviders.of(this).get(RealEstateAdViewModel::class.java)
-
-        // Add an observer on the LiveData returned by getAlphabetizedWords.
-        // The onChanged() method fires when the observed data changes and the activity is
-        // in the foreground.
-        adViewModel.allAds.observe(this, Observer { ads ->
-            // Update the cached copy of the words in the adapter.
-            annonce = ads!!.get(position)
-            fullName.text = annonce.sellerFullName
-            phoneProfile.text = annonce.sellerPhone
-            emailProfile.text = annonce.sellerMail
-
-
-            callSeller.setOnClickListener(View.OnClickListener {
-                Toast.makeText(this.context,"Calling",Toast.LENGTH_SHORT).show()
-                callPhone()
-            })
+        fullName.text = annonce.sellerFullName
+        phoneProfile.text = annonce.sellerPhone
+        emailProfile.text = annonce.sellerMail
+        callSeller.setOnClickListener(View.OnClickListener {
+            Toast.makeText(this.context,"Calling",Toast.LENGTH_SHORT).show()
+            callPhone()
         })
     }
 

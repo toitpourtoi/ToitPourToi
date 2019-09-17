@@ -1,5 +1,6 @@
 package com.example.housesfinder.Activities
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -111,14 +112,28 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun signOut() {
-        //verify first if we are using google or facebook account then deconnect
-        // Firebase sign out
-        auth.signOut()
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Se déconnecter")
+        builder.setMessage("Êtes vous sûre de vouloir se déconnecter de ToitPourToi ?")
 
-        // Google sign out
-        googleSignInClient.signOut().addOnCompleteListener(this) {
-            updateUI(null)
+        builder.setPositiveButton(android.R.string.yes) { dialog, which ->
+            Toast.makeText(this, "Vous êtes déconnecté", Toast.LENGTH_SHORT).show()
+            //verify first if we are using google or facebook account then deconnect
+            // Firebase sign out
+            auth.signOut()
+
+            // Google sign out
+            googleSignInClient.signOut().addOnCompleteListener(this) {
+                updateUI(null)
+            }
         }
+
+        builder.setNegativeButton(android.R.string.no) { dialog, which ->
+            dialog.dismiss()
+        }
+
+        builder.show()
+
     }
 
     private fun updateUI(user: FirebaseUser?) {

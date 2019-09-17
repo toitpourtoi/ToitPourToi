@@ -73,8 +73,6 @@ class FragmentHome : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         val recyclerView = activity!!.findViewById<RecyclerView>(R.id.annoncesList)
-        val logOutBtn = activity!!.findViewById<RecyclerView>(R.id.logout_btn)
-        val notifBtn = activity!!.findViewById<RecyclerView>(R.id.notification_btn)
         val adapter = RealEstateAdListAdapter(this.context!!)
 
         val  realEstateList : ArrayList<RealEstateAd> =ArrayList()

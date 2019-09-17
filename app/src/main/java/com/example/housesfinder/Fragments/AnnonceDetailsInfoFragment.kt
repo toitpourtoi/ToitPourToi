@@ -17,11 +17,9 @@ import kotlinx.android.synthetic.main.fragment_annonce_details.*
 import java.util.*
 
 @SuppressLint("ValidFragment")
-class AnnonceDetailsInfoFragment(var position : Int) : Fragment(){
+class AnnonceDetailsInfoFragment(var position : Int,var annonce : RealEstateAd) : Fragment(){
     lateinit var viewPager : ViewPager
     lateinit var adapter: ViewPagerAdapter
-    private lateinit var  annonce: RealEstateAd
-    private lateinit var adViewModel: RealEstateAdViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,25 +38,14 @@ class AnnonceDetailsInfoFragment(var position : Int) : Fragment(){
         viewPager = activity!!.findViewById(R.id.viewPager)
         viewPager.adapter = adapter
 
-        //get the annonce from database get by id
-        //get the annonce from database get by id
-        adViewModel = ViewModelProviders.of(this).get(RealEstateAdViewModel::class.java)
-
-        // Add an observer on the LiveData returned by getAlphabetizedWords.
-        // The onChanged() method fires when the observed data changes and the activity is
-        // in the foreground.
-        adViewModel.allAds.observe(this, Observer { ads ->
-            // Update the cached copy of the words in the adapter.
-            annonce = ads!!.get(position)
-            //display data :
-            wilayaDetails.text = annonce.address + "," + "," + annonce.wilaya
-            areaDetails.text = annonce.area
-            priceDetails.text = annonce.price + " DA"
-            titreDetails.text = annonce.type
-            categorieDetaisl.text = annonce.category
-            typeDetails.text = annonce.type
-            descriptionDetails.text = annonce.descript
-        })
+        //fill data
+        wilayaDetails.text = annonce.address + "," + "," + annonce.wilaya
+        areaDetails.text = annonce.area
+        priceDetails.text = annonce.price + " DA"
+        titreDetails.text = annonce.title
+        categorieDetaisl.text = annonce.category
+        typeDetails.text = annonce.type
+        descriptionDetails.text = annonce.descript
 
 
     }

@@ -145,6 +145,7 @@ class RealEstateAdListAdapter internal constructor(
     private fun showDetails(position: Int){
         var detailsFragment = AnnonceDetailsFragment()
         detailsFragment.idAd = position
+        detailsFragment.annonce = ads[position]
         addFragment(detailsFragment)
     }
 

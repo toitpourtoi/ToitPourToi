@@ -52,9 +52,6 @@ class RegisterFragment : Fragment() {
         google_btn.setOnClickListener {
             signIn()
         }
-        facebook_btn.setOnClickListener {
-            startActivity(Intent(activity, MainActivity::class.java))
-        }
 
     }
 
