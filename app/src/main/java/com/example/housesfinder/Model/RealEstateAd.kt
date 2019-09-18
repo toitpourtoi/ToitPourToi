@@ -30,7 +30,7 @@ class RealEstateAd {
     var linkImg: String = "https://------------"
 
     @ColumnInfo(name = "category")
-    var category : String = "Appartement"
+    var category : String = "VENTE"
 
     @ColumnInfo(name = "type")
     var type : String = "VENTE"

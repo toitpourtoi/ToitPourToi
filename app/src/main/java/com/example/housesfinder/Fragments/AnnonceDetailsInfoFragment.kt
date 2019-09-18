@@ -43,11 +43,6 @@ class AnnonceDetailsInfoFragment(var position : Int,var annonce : RealEstateAd) 
     }
     fun loadData(link : String){
         if(link.contains("annonce-algerie")){
-            if(annonce.title.toUpperCase().contains("LOCATION")){
-                annonce.category = "LOCATION"
-            }else{
-                annonce.category = "VENTE"
-            }
             if(annonce.title.contains("-")){
                 annonce.price = annonce.title.split("-")[1]
                 priceDetails.text = annonce.price
@@ -59,11 +54,7 @@ class AnnonceDetailsInfoFragment(var position : Int,var annonce : RealEstateAd) 
                 if(!link.contains("annonce-algerie")){
                     val title = doc.select("#ad-content h1").text()
                     annonce.title = title
-                    if(title.toUpperCase().contains("LOCATION")){
-                        annonce.category = "LOCATION"
-                    }else{
-                        annonce.category = "VENTE"
-                    }
+
                     val description = doc.select("#ad-content p").text()
                     annonce.descript = description
                     val phone = doc.select(".info > ul:nth-child(1) > li:nth-child(1) > strong:nth-child(2) > font:nth-child(2)").text()

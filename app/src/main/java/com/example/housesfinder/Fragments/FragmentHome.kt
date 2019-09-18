@@ -94,6 +94,12 @@ class FragmentHome : Fragment() {
                     ad.wilaya=item.title!!.substringAfter("Wilaya de")
                 }
 
+
+                if(item.title!!.toUpperCase().contains("LOCATION")){
+                    ad.category = "LOCATION"
+                }else{
+                    ad.category = "VENTE"
+                }
                 realEstateList.add(ad)
 
             }
