@@ -7,6 +7,7 @@ package com.example.housesfinder.Fragments
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,6 +27,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.*
 import me.toptas.rssconverter.RssItem
 
 
@@ -73,9 +75,11 @@ class FragmentHome : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         val recyclerView = activity!!.findViewById<RecyclerView>(R.id.annoncesList)
-        val logOutBtn = activity!!.findViewById<RecyclerView>(R.id.logout_btn)
-        val notifBtn = activity!!.findViewById<RecyclerView>(R.id.notification_btn)
+
         val adapter = RealEstateAdListAdapter(this.context!!)
+        var ref: DatabaseReference = FirebaseDatabase.getInstance().getReference("saved_posts").child("user_posts")
+            .child(MainActivity.USER_KEY).child("saved_posts")
+
 
         val  realEstateList : ArrayList<RealEstateAd> =ArrayList()
         rssAdViewModel = ViewModelProviders.of(this).get(RssAdsViewModel::class.java)
@@ -95,6 +99,38 @@ class FragmentHome : Fragment() {
                 else{
                     ad.wilaya=item.title!!.substringAfter("Wilaya de")
                 }
+
+
+
+                val challengeListener = object : ValueEventListener {
+
+                    override fun onCancelled(p0: DatabaseError) {
+                        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                    }
+
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        var snapshotIterable: Iterable<DataSnapshot>  = dataSnapshot.children
+                        var iterator: Iterator<DataSnapshot> = snapshotIterable.iterator()
+                        var found=false
+                        while ((iterator.hasNext())&& (!found)){
+
+                            val savedAds = iterator.next()
+                            if (item.link==savedAds.value)
+                            {found=true
+                                ad.state=1
+
+
+                            }
+
+
+                        }
+                    }
+                }
+                ref.addValueEventListener(challengeListener)
+
+                /*if (checkSaved(ad.link)==true){
+                    Log.i("result",checkSaved(item.link!!).toString())
+                    ad.state=1 }*/
 
                 realEstateList.add(ad)
 
@@ -167,7 +203,7 @@ class FragmentHome : Fragment() {
             startActivity(Intent(activity,WelcomeSplashActivity::class.java))
         }
 
-        val adapter = RealEstateAdListAdapter(context!!)
+        /*val adapter = RealEstateAdListAdapter(context!!)
         var ad = RealEstateAd()
         ad.id = 5
         ad.link = "http://www.annonce-algerie.com/DetailsAnnonceImmobilier.asp?cod_ann=186244"
@@ -175,9 +211,44 @@ class FragmentHome : Fragment() {
         adapter.setAds(arrayListOf(ad))
 
       //  recyclerView.adapter = adapter
-       // recyclerView.layoutManager = LinearLayoutManager(context!!)
+       // recyclerView.layoutManager = LinearLayoutManager(context!!)*/
 
     }
+    private fun checkSaved(link:String):Boolean
+    { var result:Boolean=false
+        var ref: DatabaseReference = FirebaseDatabase.getInstance().getReference("saved_posts").child("user_posts")
+            .child(MainActivity.USER_KEY).child("saved_posts")
 
 
-}
+        val challengeListener = object : ValueEventListener {
+
+            override fun onCancelled(p0: DatabaseError) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                var snapshotIterable: Iterable<DataSnapshot>  = dataSnapshot.children
+                var iterator: Iterator<DataSnapshot> = snapshotIterable.iterator()
+                var found=false
+                while ((iterator.hasNext())&& (!found)){
+
+                    val savedAds = iterator.next()
+                    Log.i("link",link)
+                    Log.i("info,",savedAds.value.toString())
+                    if (link==savedAds.value)
+                    {found=true
+                        Log.i("found2",found.toString())
+                        result=true
+
+
+                }
+
+
+            }
+    }
+        }
+        ref.addValueEventListener(challengeListener)
+        Log.i("found",result.toString())
+      return result
+
+}}

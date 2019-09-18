@@ -64,4 +64,6 @@ class RealEstateAd {
 
     @ColumnInfo(name = "seller_mail")
     var sellerMail : String = "----"
+    @ColumnInfo(name = "save_key")
+    var key: String = "----"
 }

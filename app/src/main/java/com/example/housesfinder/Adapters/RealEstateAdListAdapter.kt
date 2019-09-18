@@ -1,30 +1,22 @@
 package com.example.housesfinder.Adapters
 
+import android.app.AlertDialog
+import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.PopupMenu
 import android.widget.TextView
-import android.app.AlertDialog
-import android.app.Dialog
-import android.content.Context
-import android.net.Uri
-import android.util.Log
-import android.view.*
-import android.widget.*
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.example.housesfinder.Activities.MainActivity
-import com.example.housesfinder.Database.RealEstateAdRoomDatabase
 import com.example.housesfinder.Fragments.AnnonceDetailsFragment
-import com.example.housesfinder.Fragments.FragmentHome
-import com.example.housesfinder.Fragments.RegisterFragment
 import com.example.housesfinder.Model.RealEstateAd
-import com.example.housesfinder.R
-import com.example.housesfinder.ViewModel.RealEstateAdViewModel
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import com.google.firebase.database.FirebaseDatabase
+
 
 class RealEstateAdListAdapter internal constructor(
     context: Context
@@ -35,17 +27,17 @@ class RealEstateAdListAdapter internal constructor(
     private val adapterContext = context
 
     inner class AdViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val adItemView: TextView = itemView.findViewById(R.id.cardTitle)
-        val wilayaItemView : TextView = itemView.findViewById(R.id.cardWilaya)
-        val linkItemView : TextView = itemView.findViewById(R.id.linkDetails)
-        val dateItemView : TextView = itemView.findViewById(R.id.dateDetails)
-        val detailsBtn : ImageButton = itemView.findViewById(R.id.seeDetails)
-        val saveBtn : ImageButton = itemView.findViewById(R.id.book_btn)
-        val moreBtn : ImageButton = itemView.findViewById(R.id.more_btn)
+        val adItemView: TextView = itemView.findViewById(com.example.housesfinder.R.id.cardTitle)
+        val wilayaItemView : TextView = itemView.findViewById(com.example.housesfinder.R.id.cardWilaya)
+        val linkItemView : TextView = itemView.findViewById(com.example.housesfinder.R.id.linkDetails)
+        val dateItemView : TextView = itemView.findViewById(com.example.housesfinder.R.id.dateDetails)
+        val detailsBtn : ImageButton = itemView.findViewById(com.example.housesfinder.R.id.seeDetails)
+        val saveBtn : ImageButton = itemView.findViewById(com.example.housesfinder.R.id.book_btn)
+        val moreBtn : ImageButton = itemView.findViewById(com.example.housesfinder.R.id.more_btn)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AdViewHolder {
-        val itemView = inflater.inflate(R.layout.card_annonce, parent, false)
+        val itemView = inflater.inflate(com.example.housesfinder.R.layout.card_annonce, parent, false)
         return AdViewHolder(itemView)
     }
 
@@ -58,7 +50,7 @@ class RealEstateAdListAdapter internal constructor(
         holder.dateItemView.text = current.date
 
         if(ads[position].state == 1){
-            holder.saveBtn.setBackgroundResource(R.drawable.ic_bookmark_black_24dp)
+            holder.saveBtn.setBackgroundResource(com.example.housesfinder.R.drawable.ic_bookmark_black_24dp)
         }
         //set actions
         holder.detailsBtn.setOnClickListener {
@@ -72,15 +64,15 @@ class RealEstateAdListAdapter internal constructor(
         //display menu when clicking on moreBtn
         holder.moreBtn.setOnClickListener {
             var popupMenu = PopupMenu(adapterContext,it)
-            popupMenu.menuInflater.inflate(R.menu.popup_menu,popupMenu.menu)
+            popupMenu.menuInflater.inflate(com.example.housesfinder.R.menu.popup_menu,popupMenu.menu)
             if(ads[position].state == 1){
                 popupMenu.menu.getItem(0).setTitle("Supprimer")
             }
             popupMenu.setOnMenuItemClickListener{ item ->
                 when(item.itemId) {
-                    R.id.action_save ->
+                    com.example.housesfinder.R.id.action_save ->
                         saveAnnonce(holder.saveBtn,position)
-                    R.id.action_details->
+                    com.example.housesfinder.R.id.action_details->
                         showDetails(position)
                 }
                 true
@@ -104,10 +96,10 @@ class RealEstateAdListAdapter internal constructor(
         (adapterContext as MainActivity)!!.supportFragmentManager
             .beginTransaction()
             .setCustomAnimations(
-                R.anim.design_bottom_sheet_slide_in,
-                R.anim.design_bottom_sheet_slide_out
+                com.example.housesfinder.R.anim.design_bottom_sheet_slide_in,
+                com.example.housesfinder.R.anim.design_bottom_sheet_slide_out
             )
-            .replace(R.id.frame_container, fragment, fragment.javaClass.getSimpleName())
+            .replace(com.example.housesfinder.R.id.frame_container, fragment, fragment.javaClass.getSimpleName())
             .addToBackStack(fragment.javaClass.getSimpleName())
             .commit()
     }
@@ -119,24 +111,39 @@ class RealEstateAdListAdapter internal constructor(
             ads[position].state = 1
             ads[position].userId = MainActivity.USER_ID
             MainActivity.adViewModel.insert(ads[position])
-            saveBtn.setBackgroundResource(R.drawable.ic_bookmark_black_24dp)
+            saveBtn.setBackgroundResource(com.example.housesfinder.R.drawable.ic_bookmark_black_24dp)
             Toast.makeText(adapterContext, "L'annonce a bien été enregistrée", Toast.LENGTH_SHORT).show()
         }
+        //https://www.algerimmo.com/achat-vente/achat-vente-maison/bungalow-zemmouri-el-bahri-2205.htm
+        //TODO :refactor this code
+        var  Ref: FirebaseDatabase = FirebaseDatabase.getInstance()
+        var ref = Ref.reference.child("saved_posts").child("user_posts")
+            .child(MainActivity.USER_KEY).child("saved_posts").push()
+        ref.child("key").setValue(ref.key)
+        ads[position].key=ref.key!!
+        ref.setValue( ads[position].link)
+
     }
     private fun deleteAnnonce(saveBtn: ImageButton,position: Int){
         val builder = AlertDialog.Builder(adapterContext)
         builder.setTitle("Supprimer l'annonce")
-        builder.setMessage("Vous êtes sûre que vous vouliez supprimer cette annonce de liste des enregistrements ?")
+        builder.setMessage("Etes vous  sûre  de vouloir  supprimer cette annonce de la liste des enregistrements ?")
         //builder.setPositiveButton("OK", DialogInterface.OnClickListener(function = x))
 
-        builder.setPositiveButton(android.R.string.yes) { dialog, which ->
+        builder.setPositiveButton("Oui") { dialog, which ->
             Toast.makeText(adapterContext, "L'annonce a bien été supprimée", Toast.LENGTH_SHORT).show()
             ads[position].state = -1
             MainActivity.adViewModel.delete(ads[position])
-            saveBtn.setBackgroundResource(R.drawable.ic_bookmark_border_black_24dp)
+            var  Ref: FirebaseDatabase = FirebaseDatabase.getInstance()
+            var ref = Ref.reference.child("saved_posts").child("user_posts")
+                .child(MainActivity.USER_KEY).child("saved_posts").child(ads[position].key)
+            ref.ref.removeValue()
+
+
+            saveBtn.setBackgroundResource(com.example.housesfinder.R.drawable.ic_bookmark_border_black_24dp)
         }
 
-        builder.setNegativeButton(android.R.string.no) { dialog, which ->
+        builder.setNegativeButton("Annuler") { dialog, which ->
             dialog.dismiss()
         }
 

@@ -1,19 +1,17 @@
 package com.example.housesfinder.Activities
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.FrameLayout
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.example.housesfinder.*
-import com.example.housesfinder.Fragments.FragmentHome
 import com.example.housesfinder.Fragments.FragmentCollectionSave
+import com.example.housesfinder.Fragments.FragmentHome
 import com.example.housesfinder.Fragments.FragmentNotifications
+import com.example.housesfinder.Model.User
+import com.example.housesfinder.R
 import com.example.housesfinder.ViewModel.RealEstateAdViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -21,6 +19,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -34,6 +33,7 @@ class MainActivity : AppCompatActivity() {
 
     companion object{
         lateinit var USER_ID :String
+         var USER_KEY :String=""
         lateinit var adViewModel: RealEstateAdViewModel
     }
 
@@ -78,11 +78,43 @@ class MainActivity : AppCompatActivity() {
         // Initialize Firebase Auth
         auth = FirebaseAuth.getInstance()
         USER_ID = auth.currentUser!!.uid
-        Toast.makeText(this, USER_ID, Toast.LENGTH_SHORT)
-        Log.i("UID", USER_ID)
+
+          //checkUser()
+
+        var Ref: FirebaseDatabase = FirebaseDatabase.getInstance()
+        var ref = Ref.getReference("saved_posts").child("user_posts").push()
+        USER_KEY=ref.key!!
+        ref.setValue(User(auth.currentUser!!.uid,ref.key!!))
+
+
+        /*Log.i("heresaved_posts","h")
+
+        Ref.child("").child("user_id").setValue(User(uid)).addOnSuccessListener { taskSnapshot ->
+            Toast.makeText(this, "Challenge added successfully", Toast.LENGTH_SHORT).show()
+        }.addOnFailureListener { error ->
+
+            Toast.makeText(this,error.message,Toast.LENGTH_SHORT).show()
+        }*/
 
         logout_btn.setOnClickListener {
-            signOut()
+
+            val builder = AlertDialog.Builder(this)
+            builder.setTitle("Déconnexion")
+            builder.setMessage("Etes vous  sûre de vouloir quitter l'application ?")
+            //builder.setPositiveButton("OK", DialogInterface.OnClickListener(function = x))
+
+            builder.setPositiveButton("Oui") { dialog, which ->
+                signOut()
+
+            }
+
+            builder.setNegativeButton("Annuler") { dialog, which ->
+
+               dialog.dismiss()
+            }
+
+            builder.show()
+
         }
         notification_btn.setOnClickListener {
             val fragment = FragmentNotifications()
@@ -128,5 +160,43 @@ class MainActivity : AppCompatActivity() {
         } else {
             startActivity(Intent(this,WelcomeSplashActivity::class.java))
         }
+    }
+     private fun checkUser ()
+    {         var ref: DatabaseReference = FirebaseDatabase.getInstance().getReference("saved_posts").
+        child("user_posts")
+
+
+
+        val challengeListener = object : ValueEventListener {
+
+            override fun onCancelled(p0: DatabaseError) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                var snapshotIterable: Iterable<DataSnapshot>  = dataSnapshot.children
+                var iterator: Iterator<DataSnapshot> = snapshotIterable.iterator()
+                var found=false
+                while ((iterator.hasNext())&& (!found)){
+
+                    val savedAds = iterator.next()
+                    if (savedAds.child("uid").value== USER_ID)
+                    {found=true
+
+                    }
+
+
+                }
+
+                if (!found )
+                {
+                    var Ref: FirebaseDatabase = FirebaseDatabase.getInstance()
+                    var ref = Ref.getReference("saved_posts").child("user_posts").push()
+                    USER_KEY=ref.key!!
+                    ref.setValue(User(auth.currentUser!!.uid,ref.key!!))
+                }
+            }
+        }
+        ref.addValueEventListener(challengeListener)
     }
 }

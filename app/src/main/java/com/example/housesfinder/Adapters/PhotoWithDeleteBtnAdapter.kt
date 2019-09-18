@@ -2,7 +2,6 @@ package com.example.housesfinder.Adapters
 
 import android.content.Context
 import android.net.Uri
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,7 +21,6 @@ class PhotoWithDeleteBtnAdapter : BaseAdapter {
         val photo = uriList.get(position)
         var inflator = context!!.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val layoutItem = inflator.inflate(R.layout.custom_photo_with_delete_btn,null)
-        Log.i("PHOTO : ","here photo idAd ${position}")
         layoutItem.picked_photo.setImageURI(photo)
         layoutItem.delete_picked_media.setOnClickListener {
             uriList.removeAt(position)

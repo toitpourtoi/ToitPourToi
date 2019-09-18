@@ -79,7 +79,9 @@ class RegisterFragment : Fragment() {
             try {
                 // Google Sign In was successful, authenticate with Firebase
                 val account = task.getResult(ApiException::class.java)
+
                 firebaseAuthWithGoogle(account!!)
+
             } catch (e: ApiException) {
                 // Google Sign In failed, update UI appropriately
                 Log.w("Login", "Google sign in failed", e)
@@ -90,19 +92,18 @@ class RegisterFragment : Fragment() {
     }
 
     private fun firebaseAuthWithGoogle(acct: GoogleSignInAccount) {
-        Log.d("Login", "firebaseAuthWithGoogle:" + acct.id!!)
+
 
         val credential = GoogleAuthProvider.getCredential(acct.idToken, null)
         mAuth.signInWithCredential(credential)
             .addOnCompleteListener(activity!!) { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
-                    Log.d("Login", "signInWithCredential:success")
                     val user = mAuth.currentUser
                     updateUI(user)
+
                 } else {
                     // If sign in fails, display a message to the user.
-                    Log.w("Login", "signInWithCredential:failure", task.exception)
                     Toast.makeText(context!!,"Auth Failed",Toast.LENGTH_LONG).show()
                     updateUI(null)
                 }
