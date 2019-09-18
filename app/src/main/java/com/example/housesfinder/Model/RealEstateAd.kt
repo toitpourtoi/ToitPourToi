@@ -33,7 +33,7 @@ class RealEstateAd {
     var category : String = "Appartement"
 
     @ColumnInfo(name = "type")
-    var type : String = "Vente"
+    var type : String = "VENTE"
 
     @ColumnInfo(name = "address")
     var address : String = "----"

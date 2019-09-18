@@ -7,22 +7,21 @@ import androidx.fragment.app.FragmentStatePagerAdapter
 import com.example.housesfinder.Fragments.AnnonceDetailsInfoFragment
 import com.example.housesfinder.Fragments.AnnonceDetailsPhotosFragment
 import com.example.housesfinder.Fragments.AnnonceDetailsSellerFragment
+import com.example.housesfinder.Fragments.FragmentCatSave
 import com.example.housesfinder.Model.RealEstateAd
 
-class PageAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
-    var position : Int = 0
+class PageCatAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
     val tabNames: ArrayList<String> = ArrayList()
     val fragments: ArrayList<Fragment>  = ArrayList()
 
-    fun setPositionWithFragments(position: Int,annonce : RealEstateAd){
-        this.position = position
-        fragments.add(AnnonceDetailsInfoFragment(position,annonce))
-        tabNames.add("Sur l'immobilier")
-        fragments.add(AnnonceDetailsSellerFragment(position,annonce))
-        tabNames.add("Vendeur")
-        fragments.add(AnnonceDetailsPhotosFragment(position,annonce))
-        tabNames.add("Photos")
-        Log.i("SIZE",fragments.size.toString())
+    fun setPositionWithFragments(){
+        fragments.add(FragmentCatSave())
+        tabNames.add("VENTE")
+        var fragmentCatSave = FragmentCatSave()
+        fragmentCatSave.cat = "LOCATION"
+        fragments.add(fragmentCatSave)
+        tabNames.add("LOCATION")
+
     }
     override fun getCount(): Int {
         return fragments.size

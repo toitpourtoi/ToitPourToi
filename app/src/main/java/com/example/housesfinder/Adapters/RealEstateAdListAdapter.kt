@@ -7,24 +7,17 @@ import android.widget.ImageButton
 import android.widget.PopupMenu
 import android.widget.TextView
 import android.app.AlertDialog
-import android.app.Dialog
 import android.content.Context
-import android.net.Uri
 import android.util.Log
-import android.view.*
-import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.example.housesfinder.Activities.MainActivity
-import com.example.housesfinder.Database.RealEstateAdRoomDatabase
 import com.example.housesfinder.Fragments.AnnonceDetailsFragment
-import com.example.housesfinder.Fragments.FragmentHome
-import com.example.housesfinder.Fragments.RegisterFragment
 import com.example.housesfinder.Model.RealEstateAd
 import com.example.housesfinder.R
-import com.example.housesfinder.ViewModel.RealEstateAdViewModel
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import android.widget.Toast
+import android.telephony.SmsManager
+
 
 class RealEstateAdListAdapter internal constructor(
     context: Context
@@ -42,6 +35,7 @@ class RealEstateAdListAdapter internal constructor(
         val detailsBtn : ImageButton = itemView.findViewById(R.id.seeDetails)
         val saveBtn : ImageButton = itemView.findViewById(R.id.book_btn)
         val moreBtn : ImageButton = itemView.findViewById(R.id.more_btn)
+        val shareBtn : ImageButton = itemView.findViewById(R.id.shareBtn)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AdViewHolder {
@@ -57,12 +51,18 @@ class RealEstateAdListAdapter internal constructor(
         holder.linkItemView.text = current.link
         holder.dateItemView.text = current.date
 
+
         if(ads[position].state == 1){
             holder.saveBtn.setBackgroundResource(R.drawable.ic_bookmark_black_24dp)
         }
         //set actions
         holder.detailsBtn.setOnClickListener {
             showDetails(position)
+        }
+
+        //share annonce
+        holder.shareBtn.setOnClickListener{
+            sendSMS("0542758222",ads[position].link)
         }
 
         //save annonce
@@ -149,5 +149,22 @@ class RealEstateAdListAdapter internal constructor(
         addFragment(detailsFragment)
     }
 
+    fun sendSMS(phoneNo: String, msg: String) {
+        try {
+            val smsManager = SmsManager.getDefault()
+            smsManager.sendTextMessage(phoneNo, null, msg, null, null)
+            Toast.makeText(
+                adapterContext, "Message Sent",
+                Toast.LENGTH_LONG
+            ).show()
+        } catch (ex: Exception) {
+            Toast.makeText(
+                adapterContext, ex.message.toString(),
+                Toast.LENGTH_LONG
+            ).show()
+            ex.printStackTrace()
+        }
+
+    }
 
 }
