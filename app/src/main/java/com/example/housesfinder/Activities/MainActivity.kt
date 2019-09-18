@@ -3,7 +3,9 @@ package com.example.housesfinder.Activities
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.FrameLayout
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
@@ -79,12 +81,12 @@ class MainActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         USER_ID = auth.currentUser!!.uid
 
-          //checkUser()
+          checkUser()
 
-        var Ref: FirebaseDatabase = FirebaseDatabase.getInstance()
+       /* var Ref: FirebaseDatabase = FirebaseDatabase.getInstance()
         var ref = Ref.getReference("saved_posts").child("user_posts").push()
         USER_KEY=ref.key!!
-        ref.setValue(User(auth.currentUser!!.uid,ref.key!!))
+        ref.setValue(User(auth.currentUser!!.uid,ref.key!!))*/
 
 
         /*Log.i("heresaved_posts","h")
@@ -98,22 +100,9 @@ class MainActivity : AppCompatActivity() {
 
         logout_btn.setOnClickListener {
 
-            val builder = AlertDialog.Builder(this)
-            builder.setTitle("Déconnexion")
-            builder.setMessage("Etes vous  sûre de vouloir quitter l'application ?")
-            //builder.setPositiveButton("OK", DialogInterface.OnClickListener(function = x))
 
-            builder.setPositiveButton("Oui") { dialog, which ->
-                signOut()
+            signOut()
 
-            }
-
-            builder.setNegativeButton("Annuler") { dialog, which ->
-
-               dialog.dismiss()
-            }
-
-            builder.show()
 
         }
         notification_btn.setOnClickListener {
@@ -143,14 +132,28 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun signOut() {
-        //verify first if we are using google or facebook account then deconnect
-        // Firebase sign out
-        auth.signOut()
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Se déconnecter")
+        builder.setMessage("Êtes vous sûre de vouloir se déconnecter de ToitPourToi ?")
 
-        // Google sign out
-        googleSignInClient.signOut().addOnCompleteListener(this) {
-            updateUI(null)
+        builder.setPositiveButton("Oui") { dialog, which ->
+            Toast.makeText(this, "Vous êtes déconnecté", Toast.LENGTH_SHORT).show()
+            //verify first if we are using google or facebook account then deconnect
+            // Firebase sign out
+            auth.signOut()
+
+            // Google sign out
+            googleSignInClient.signOut().addOnCompleteListener(this) {
+                updateUI(null)
+            }
         }
+
+        builder.setNegativeButton("Annuler") { dialog, which ->
+            dialog.dismiss()
+        }
+
+        builder.show()
+
     }
 
     private fun updateUI(user: FirebaseUser?) {
@@ -180,8 +183,10 @@ class MainActivity : AppCompatActivity() {
                 while ((iterator.hasNext())&& (!found)){
 
                     val savedAds = iterator.next()
-                    if (savedAds.child("uid").value== USER_ID)
+                    Log.i("info",savedAds.child("uid").value.toString())
+                    if (savedAds.child("uid").value.toString()== USER_ID)
                     {found=true
+
 
                     }
 
@@ -200,3 +205,4 @@ class MainActivity : AppCompatActivity() {
         ref.addValueEventListener(challengeListener)
     }
 }
+

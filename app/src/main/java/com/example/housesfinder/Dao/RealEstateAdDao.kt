@@ -17,6 +17,9 @@ interface RealEstateAdDao {
     @Query("SELECT * FROM real_estate_ad_table WHERE user_id = :user_id")
     fun getAllAdsForUser(user_id:String) : LiveData<List<RealEstateAd>>
 
+    @Query("SELECT * FROM real_estate_ad_table WHERE user_id = :user_id AND category = :cat")
+    fun getAllAdsForUserByCat(user_id:String,cat:String) : LiveData<List<RealEstateAd>>
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insert(realEstateAd: RealEstateAd): Long
 

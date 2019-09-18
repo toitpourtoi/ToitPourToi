@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,17 +14,17 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import com.example.housesfinder.Model.RealEstateAd
 import com.example.housesfinder.R
-import com.example.housesfinder.ViewModel.RealEstateAdViewModel
 import kotlinx.android.synthetic.main.fragment_profile.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
+import org.jsoup.Jsoup
 
 @SuppressLint("ValidFragment")
-class AnnonceDetailsSellerFragment(val position: Int) : Fragment() {
-    private lateinit var  annonce: RealEstateAd
-    private lateinit var adViewModel: RealEstateAdViewModel
+class AnnonceDetailsSellerFragment(val position: Int,var annonce : RealEstateAd) : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,25 +42,15 @@ class AnnonceDetailsSellerFragment(val position: Int) : Fragment() {
         super.onActivityCreated(savedInstanceState)
         //set the data
         //get the annonce from database get by id
-        adViewModel = ViewModelProviders.of(this).get(RealEstateAdViewModel::class.java)
+        val link = annonce.link
+        loadData(link)
 
-        // Add an observer on the LiveData returned by getAlphabetizedWords.
-        // The onChanged() method fires when the observed data changes and the activity is
-        // in the foreground.
-        adViewModel.allAds.observe(this, Observer { ads ->
-            // Update the cached copy of the words in the adapter.
-            annonce = ads!!.get(position)
-            fullName.text = annonce.sellerFullName
-            phoneProfile.text = annonce.sellerPhone
-            emailProfile.text = annonce.sellerMail
-
-
-            callSeller.setOnClickListener(View.OnClickListener {
-                Toast.makeText(this.context,"Calling",Toast.LENGTH_SHORT).show()
-                callPhone()
-            })
+        callSeller.setOnClickListener(View.OnClickListener {
+            Toast.makeText(this.context,"Calling",Toast.LENGTH_SHORT).show()
+            callPhone()
         })
     }
+
 
     //for calling
     fun checkPermission() {
@@ -84,6 +75,37 @@ class AnnonceDetailsSellerFragment(val position: Int) : Fragment() {
             // Permission has already been granted
             callPhone()
         }
+    }
+
+    fun loadData(link : String){
+        GlobalScope.launch {
+            val operation = async(Dispatchers.IO){
+                val doc = Jsoup.connect(link).get()
+                if(link.contains("annonce-algerie")){
+                    val title = doc.select("table.da_rub_cadre:nth-child(3) .da_entete td").text()
+                    Log.i("SCRAP",title)// <2>
+                }else{
+                    val phone = doc.select(".info > ul:nth-child(1) > li:nth-child(1) > strong:nth-child(2) > font:nth-child(2)").text()
+                    annonce.sellerPhone = phone
+                    var fullname = doc.select(".info > ul:nth-child(1) > li:nth-child(2)").text()
+                    if(fullname.contains("Contact:")){
+                        fullname = fullname.substring("Contact:".length,fullname.length)
+                    }
+                    annonce.sellerFullName = fullname
+                }
+            }
+
+            operation.await()
+
+            launch(Dispatchers.Main) {
+                // Stuff that updates the UI
+                //fill data
+                fullName.text = annonce.sellerFullName
+                phoneProfile.text = annonce.sellerPhone
+                emailProfile.text = annonce.sellerMail
+            }
+        }
+
     }
 
     override fun onRequestPermissionsResult(requestCode: Int,

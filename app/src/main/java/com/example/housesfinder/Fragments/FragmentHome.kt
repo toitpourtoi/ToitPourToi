@@ -75,7 +75,6 @@ class FragmentHome : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         val recyclerView = activity!!.findViewById<RecyclerView>(R.id.annoncesList)
-
         val adapter = RealEstateAdListAdapter(this.context!!)
         var ref: DatabaseReference = FirebaseDatabase.getInstance().getReference("saved_posts").child("user_posts")
             .child(MainActivity.USER_KEY).child("saved_posts")
@@ -99,6 +98,7 @@ class FragmentHome : Fragment() {
                 else{
                     ad.wilaya=item.title!!.substringAfter("Wilaya de")
                 }
+
 
 
 
@@ -131,6 +131,13 @@ class FragmentHome : Fragment() {
                 /*if (checkSaved(ad.link)==true){
                     Log.i("result",checkSaved(item.link!!).toString())
                     ad.state=1 }*/
+
+
+                if(item.title!!.toUpperCase().contains("LOCATION")){
+                    ad.category = "LOCATION"
+                }else{
+                    ad.category = "VENTE"
+                }
 
                 realEstateList.add(ad)
 
@@ -233,11 +240,8 @@ class FragmentHome : Fragment() {
                 while ((iterator.hasNext())&& (!found)){
 
                     val savedAds = iterator.next()
-                    Log.i("link",link)
-                    Log.i("info,",savedAds.value.toString())
                     if (link==savedAds.value)
                     {found=true
-                        Log.i("found2",found.toString())
                         result=true
 
 

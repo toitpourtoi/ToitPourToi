@@ -14,7 +14,6 @@ class RealEstateAdViewModel (application: Application) : AndroidViewModel(applic
 
     private var repository: RealEstateAdRepository
     val allAds: LiveData<List<RealEstateAd>>
-
     init {
 
         val realEstateDao  = RealEstateAdRoomDatabase.getDatabase(application).realEstateDao()

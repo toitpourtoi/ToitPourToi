@@ -6,29 +6,27 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
-import androidx.viewpager.widget.ViewPager
-import com.example.housesfinder.Adapters.ViewPagerAdapter
 import com.example.housesfinder.Model.RealEstateAd
 import com.example.housesfinder.R
-import com.example.housesfinder.ViewModel.RealEstateAdViewModel
 import kotlinx.android.synthetic.main.fragment_annonce_details.*
-import java.util.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
+import org.jsoup.Jsoup
+
+
+
+
+
 
 @SuppressLint("ValidFragment")
-class AnnonceDetailsInfoFragment(var position : Int) : Fragment(){
-    lateinit var viewPager : ViewPager
-    lateinit var adapter: ViewPagerAdapter
-    private lateinit var  annonce: RealEstateAd
-    private lateinit var adViewModel: RealEstateAdViewModel
+class AnnonceDetailsInfoFragment(var position : Int,var annonce : RealEstateAd) : Fragment(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
-        adapter = ViewPagerAdapter(this!!.context!!, ArrayList(), 2f)
-    }
+            }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         var rootView = inflater!!.inflate(R.layout.fragment_annonce_details, container, false)
@@ -37,29 +35,63 @@ class AnnonceDetailsInfoFragment(var position : Int) : Fragment(){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewPager = activity!!.findViewById(R.id.viewPager)
-        viewPager.adapter = adapter
 
-        //get the annonce from database get by id
-        //get the annonce from database get by id
-        adViewModel = ViewModelProviders.of(this).get(RealEstateAdViewModel::class.java)
+        val link = annonce.link
+        loadData(link)
 
-        // Add an observer on the LiveData returned by getAlphabetizedWords.
-        // The onChanged() method fires when the observed data changes and the activity is
-        // in the foreground.
-        adViewModel.allAds.observe(this, Observer { ads ->
-            // Update the cached copy of the words in the adapter.
-            annonce = ads!!.get(position)
-            //display data :
-            wilayaDetails.text = annonce.address + "," + "," + annonce.wilaya
-            areaDetails.text = annonce.area
-            priceDetails.text = annonce.price + " DA"
-            titreDetails.text = annonce.type
-            categorieDetaisl.text = annonce.category
-            typeDetails.text = annonce.type
-            descriptionDetails.text = annonce.descript
-        })
+    }
+    fun loadData(link : String){
+        if(link.contains("annonce-algerie")){
+            if(annonce.title.contains("-")){
+                annonce.price = annonce.title.split("-")[1]
+                priceDetails.text = annonce.price
+            }
+        }
+        GlobalScope.launch {
+            val operation = async(Dispatchers.IO){
+                val doc = Jsoup.connect(link).get()
+                if(!link.contains("annonce-algerie")){
+                    val title = doc.select("#ad-content h1").text()
+                    annonce.title = title
 
+                    val description = doc.select("#ad-content p").text()
+                    annonce.descript = description
+                    val phone = doc.select(".info > ul:nth-child(1) > li:nth-child(1) > strong:nth-child(2) > font:nth-child(2)").text()
+                    annonce.sellerPhone = phone
+                    var fullname = doc.select(".info > ul:nth-child(1) > li:nth-child(2)").text()
+                    if(fullname.contains("Contact:")){
+                        fullname = fullname.substring("Contact:".length,fullname.length)
+                    }
+                    annonce.sellerFullName = fullname
+                    var ville = doc.select(".info > ul:nth-child(1) > li:nth-child(4)").text()
+                    if(ville.contains("Ville:")){
+                        ville = ville.substring("Ville:".length,ville.length)
+                    }
+                    annonce.address = ville
+                    var wilaya = doc.select(".info > ul:nth-child(1) > li:nth-child(3)").text()
+                    if(wilaya.contains("Localisation:")){
+                        wilaya = wilaya.substring("Localisation:".length,wilaya.length)
+                    }
+                    annonce.wilaya = wilaya
+                    var prix = doc.select(".price > b:nth-child(1)").text()
+                    annonce.price = prix
+                }
+            }
+
+            operation.await()
+
+            launch(Dispatchers.Main) {
+                // Stuff that updates the UI
+                //fill data
+                wilayaDetails.text = annonce.address + " , " + annonce.wilaya
+                areaDetails.text = annonce.area
+                priceDetails.text = annonce.price
+                titreDetails.text = annonce.title
+                categorieDetaisl.text = annonce.category
+                typeDetails.text = annonce.type
+                descriptionDetails.text = annonce.descript
+            }
+        }
 
     }
 

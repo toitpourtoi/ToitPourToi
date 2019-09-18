@@ -1,7 +1,9 @@
 package com.example.housesfinder.Adapters
 
+
 import android.app.AlertDialog
 import android.content.Context
+import android.telephony.SmsManager
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.housesfinder.Activities.MainActivity
 import com.example.housesfinder.Fragments.AnnonceDetailsFragment
 import com.example.housesfinder.Model.RealEstateAd
+import com.example.housesfinder.R
 import com.google.firebase.database.FirebaseDatabase
 
 
@@ -27,6 +30,7 @@ class RealEstateAdListAdapter internal constructor(
     private val adapterContext = context
 
     inner class AdViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
         val adItemView: TextView = itemView.findViewById(com.example.housesfinder.R.id.cardTitle)
         val wilayaItemView : TextView = itemView.findViewById(com.example.housesfinder.R.id.cardWilaya)
         val linkItemView : TextView = itemView.findViewById(com.example.housesfinder.R.id.linkDetails)
@@ -34,6 +38,8 @@ class RealEstateAdListAdapter internal constructor(
         val detailsBtn : ImageButton = itemView.findViewById(com.example.housesfinder.R.id.seeDetails)
         val saveBtn : ImageButton = itemView.findViewById(com.example.housesfinder.R.id.book_btn)
         val moreBtn : ImageButton = itemView.findViewById(com.example.housesfinder.R.id.more_btn)
+        val shareBtn : ImageButton = itemView.findViewById(R.id.shareBtn)
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AdViewHolder {
@@ -49,12 +55,18 @@ class RealEstateAdListAdapter internal constructor(
         holder.linkItemView.text = current.link
         holder.dateItemView.text = current.date
 
+
         if(ads[position].state == 1){
             holder.saveBtn.setBackgroundResource(com.example.housesfinder.R.drawable.ic_bookmark_black_24dp)
         }
         //set actions
         holder.detailsBtn.setOnClickListener {
             showDetails(position)
+        }
+
+        //share annonce
+        holder.shareBtn.setOnClickListener{
+            sendSMS("0551789142cd",ads[position].link)
         }
 
         //save annonce
@@ -118,7 +130,7 @@ class RealEstateAdListAdapter internal constructor(
         //TODO :refactor this code
         var  Ref: FirebaseDatabase = FirebaseDatabase.getInstance()
         var ref = Ref.reference.child("saved_posts").child("user_posts")
-            .child(MainActivity.USER_KEY).child("saved_posts").push()
+            .child(MainActivity.USER_ID).child("saved_posts").push()
         ref.child("key").setValue(ref.key)
         ads[position].key=ref.key!!
         ref.setValue( ads[position].link)
@@ -136,7 +148,7 @@ class RealEstateAdListAdapter internal constructor(
             MainActivity.adViewModel.delete(ads[position])
             var  Ref: FirebaseDatabase = FirebaseDatabase.getInstance()
             var ref = Ref.reference.child("saved_posts").child("user_posts")
-                .child(MainActivity.USER_KEY).child("saved_posts").child(ads[position].key)
+                .child(MainActivity.USER_ID).child("saved_posts").child(ads[position].key)
             ref.ref.removeValue()
 
 
@@ -152,8 +164,26 @@ class RealEstateAdListAdapter internal constructor(
     private fun showDetails(position: Int){
         var detailsFragment = AnnonceDetailsFragment()
         detailsFragment.idAd = position
+        detailsFragment.annonce = ads[position]
         addFragment(detailsFragment)
     }
 
+    fun sendSMS(phoneNo: String, msg: String) {
+        try {
+            val smsManager = SmsManager.getDefault()
+            smsManager.sendTextMessage(phoneNo, null, msg, null, null)
+            Toast.makeText(
+                adapterContext, "Message Sent",
+                Toast.LENGTH_LONG
+            ).show()
+        } catch (ex: Exception) {
+            Toast.makeText(
+                adapterContext, ex.message.toString(),
+                Toast.LENGTH_LONG
+            ).show()
+            ex.printStackTrace()
+        }
+
+    }
 
 }
