@@ -1,7 +1,7 @@
 # ToiPourTOi
 Mobile android app on  smartphone and tablet enabling users to find real  estate ads posted on the different online sources .
-The targeted country is Algeria .
-The app is in french for the moment , its name ToiPourToi means a "roof for you"
+- The targeted country is Algeria .
+- The app is in french for the moment , its name ToiPourToi means a "roof for you".
 # Main functions 
 - Display avialable ads .
 - Display the seller information 
